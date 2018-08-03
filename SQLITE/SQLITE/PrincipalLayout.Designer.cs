@@ -32,6 +32,7 @@ namespace SQLITE
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PrincipalLayout));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -43,6 +44,7 @@ namespace SQLITE
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.secondToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -97,10 +99,16 @@ namespace SQLITE
             // 
             // treeViewDataConecction
             // 
+            this.treeViewDataConecction.ImageIndex = 0;
+            this.treeViewDataConecction.ImageList = this.imageList1;
             this.treeViewDataConecction.Location = new System.Drawing.Point(3, 54);
             this.treeViewDataConecction.Name = "treeViewDataConecction";
+            this.treeViewDataConecction.SelectedImageIndex = 0;
             this.treeViewDataConecction.Size = new System.Drawing.Size(121, 334);
             this.treeViewDataConecction.TabIndex = 0;
+            this.treeViewDataConecction.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.treeViewDataConecction_AfterCollapse);
+            this.treeViewDataConecction.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.treeViewDataConecction_AfterExpand);
+            this.treeViewDataConecction.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewDataConecction_AfterSelect);
             // 
             // manualQuerys
             // 
@@ -142,6 +150,13 @@ namespace SQLITE
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "carpeta cerrada");
+            this.imageList1.Images.SetKeyName(1, "carpeta abierta");
+            // 
             // PrincipalLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -176,6 +191,7 @@ namespace SQLITE
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem secondToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }
 

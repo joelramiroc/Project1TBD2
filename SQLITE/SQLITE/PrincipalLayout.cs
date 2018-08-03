@@ -94,7 +94,7 @@ namespace SQLITE
         {
             this.db = new DataBaseConnection();
             string path = string.Empty;
-
+            openFileDialog1.Filter = "Databases SQLite (*.db, *.sqlite, *.bd, *.data, *.s3db)|*.db;*.sqlite;*.bd;*.data *.s3db";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 path = openFileDialog1.FileName;
@@ -107,12 +107,17 @@ namespace SQLITE
 
             var viewList = await this.db.GetViewsDataBase();
 
-            var tables = this.treeViewDataConecction.Nodes.Add("TABLES");
-            tables.Tag = new NodeInfo
+            var tables = new TreeNode("TABLES")
             {
-                Id = 1,
-                Type = NodeType.Menu
+                ImageKey = "carpeta cerrada",
+                Tag = new NodeInfo
+                {
+                    Id = 1,
+                    Type = NodeType.Menu
+                }
             };
+
+            this.treeViewDataConecction.Nodes.Add(tables);
 
             var views = this.treeViewDataConecction.Nodes.Add("VIEWS");
             views.Tag = new NodeInfo
@@ -138,17 +143,17 @@ namespace SQLITE
 
             var t = new NodeInfo();
 
-            //tables.Nodes.AddRange(
-            //    tableList.Select(sa => new TreeNode
-            //    {
-            //        Text  = sa.TableName,
-            //        Tag = new NodeInfo
-            //        {
-            //            Id = 0,
-            //            Type = NodeType.table
-            //        },
-            //        nodes = sa.columns.select(tt => new treenode { }).toarray()
-            //    }).toarray());
+            tables.Nodes.AddRange(
+                tableList.Select(sa =>
+                new TreeNode(sa.TableName, sa.Columns.Select(tt => new TreeNode { }).ToArray())
+                {
+                    Tag = new NodeInfo
+                    {
+                        Id = 0,
+                        Type = NodeType.Table
+                    }   
+                }
+                ).ToArray());
 
             foreach (var item in tableList)
             {
@@ -187,6 +192,31 @@ namespace SQLITE
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {
+        }
+
+        private void treeViewDataConecction_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+        }
+
+        private void treeViewDataConecction_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+            if((e.Node.Tag as NodeInfo)?.Type == NodeType.Menu)
+            {
+                e.Node.ImageKey = "carpeta abierta";
+                e.Node.SelectedImageKey = "carpeta abierta";
+                base.Invalidate(e.Node.Bounds);
+            }
+        }
+
+        private void treeViewDataConecction_AfterCollapse(object sender, TreeViewEventArgs e)
+        {
+            if ((e.Node.Tag as NodeInfo)?.Type == NodeType.Menu)
+            {
+                e.Node.ImageKey = "carpeta cerrada";
+                e.Node.SelectedImageKey = "carpeta cerrada";
+                base.Invalidate(e.Node.Bounds);
+            }
         }
     }
 }
