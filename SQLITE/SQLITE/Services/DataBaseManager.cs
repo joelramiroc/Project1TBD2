@@ -104,6 +104,24 @@ namespace SQLite.Services
             return views;
         }
 
+        public async Task<List<ViewModel>> GetTriggersDataBase()
+        {
+            var triggers = new List<ViewModel>();
+            string query = @"select * FROM sqlite_master WHERE type ='trigger'";
+            SQLiteCommand sQLiteCommand3 = new SQLiteCommand(query, this.SQLiteConnection);
+            var result = sQLiteCommand3.ExecuteReader();
+            while (result.Read())
+            {
+                triggers.Add(new ViewModel
+                {
+                    Id = 0,
+                    ViewName = result["name"].ToString()
+                });
+            }
+
+            return triggers;
+        }
+
         public async Task<int> ExecuteQuery(string query)
         {
             SQLiteCommand sQLiteCommand = new SQLiteCommand(query, this.SQLiteConnection);

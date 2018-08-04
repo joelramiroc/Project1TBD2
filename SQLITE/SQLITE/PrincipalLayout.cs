@@ -106,6 +106,9 @@ namespace SQLITE
                 return false;
 
             var viewList = await this.db.GetViewsDataBase();
+            var triggersList = await this.db.GetTriggersDataBase();
+            var tableList = await this.db.GetTablesDataBase();
+
 
             var tables = new TreeNode("TABLES")
             {
@@ -116,16 +119,44 @@ namespace SQLITE
                     Type = NodeType.Menu
                 }
             };
-
             this.treeViewDataConecction.Nodes.Add(tables);
 
-            var views = this.treeViewDataConecction.Nodes.Add("VIEWS");
-            views.Tag = new NodeInfo
+
+
+            var views = new TreeNode("VIEWS")
             {
-                Id = 1,
-                Type = NodeType.Menu
+                ImageKey = "carpeta cerrada",
+                Tag = new NodeInfo
+                {
+                    Id = 1,
+                    Type = NodeType.Menu
+                }
+            };
+            this.treeViewDataConecction.Nodes.Add(views);
+
+            var triggers = new TreeNode("TRIGGERS")
+            {
+                ImageKey = "carpeta cerrada",
+                Tag = new NodeInfo
+                {
+                    Id = 1,
+                    Type = NodeType.Menu
+                }
             };
 
+            this.treeViewDataConecction.Nodes.Add(triggers);
+
+            triggers.Nodes.AddRange(
+                triggersList.Select(S => new TreeNode
+                {
+                    Text = S.ViewName,
+                    Tag = new NodeInfo
+                    {
+                        Id = 0,
+                        Type = NodeType.Trigger
+                    }
+                }).ToArray()
+                );
 
 
             views.Nodes.AddRange(
@@ -139,41 +170,28 @@ namespace SQLITE
                     }
                 }).ToArray());
 
-            var tableList = await this.db.GetTablesDataBase();
 
-            var t = new NodeInfo();
+
 
             tables.Nodes.AddRange(
                 tableList.Select(sa =>
-                new TreeNode(sa.TableName, sa.Columns.Select(tt => new TreeNode { }).ToArray())
+                new TreeNode(sa.TableName, sa.Columns.Select(tt => new TreeNode
                 {
-                    Tag = new NodeInfo
-                    {
-                        Id = 0,
-                        Type = NodeType.Table
-                    }   
-                }
-                ).ToArray());
-
-            foreach (var item in tableList)
-            {
-                var n = tables.Nodes.Add(item.TableName);
-                n.Tag = Tag = new NodeInfo
-                {
-                    Id = 0,
-                    Type = NodeType.Table
-                };
-
-                n.Nodes.AddRange(item.Columns.Select(c => new TreeNode
-                {
-                    Text = c.ColumnName,
+                    Text = tt.ColumnName,
                     Tag = new NodeInfo
                     {
                         Id = 0,
                         Type = NodeType.Column
                     }
-                }).ToArray());
-            }
+                }).ToArray())
+                {
+                    Tag = new NodeInfo
+                    {
+                        Id = 0,
+                        Type = NodeType.Table
+                    }
+                }
+                ).ToArray());
 
             return true;
         }
@@ -201,7 +219,7 @@ namespace SQLITE
 
         private void treeViewDataConecction_AfterExpand(object sender, TreeViewEventArgs e)
         {
-            if((e.Node.Tag as NodeInfo)?.Type == NodeType.Menu)
+            if ((e.Node.Tag as NodeInfo)?.Type == NodeType.Menu)
             {
                 e.Node.ImageKey = "carpeta abierta";
                 e.Node.SelectedImageKey = "carpeta abierta";

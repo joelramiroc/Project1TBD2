@@ -3,5 +3,6 @@
     Menu,
     Table,
     View,
-    Column
+    Column,
+    Trigger
 }
