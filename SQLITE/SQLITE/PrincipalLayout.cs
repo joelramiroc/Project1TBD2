@@ -1,15 +1,11 @@
 ﻿using SQLite.Services;
-using SQLITE.Models;
 using SQLITE.Services;
 using System;
 using System.Data;
-using System.Data.SQLite;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace SQLITE
 {
@@ -40,9 +36,14 @@ namespace SQLITE
             }
 
             string query = $"select * from {node.Text}";
-            var dataSet = await this.db.DataSet(query, node.Text);
-            this.dataGridView1.DataSource = dataSet.Tables[0];
+            await this.Consulta(query, node.Text);
             return;
+        }
+
+        public async Task Consulta(string query, string title)
+        {
+            var dataSet = await this.db.DataSet(query, title);
+            this.dataGridView1.DataSource = dataSet.Tables[0];
         }
 
         private void TreeViewDataConecction_NodeMouseClick(object sender, MouseEventArgs e)
@@ -196,16 +197,35 @@ namespace SQLITE
             return true;
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private async void pictureBox1_Click(object sender, EventArgs e)
         {
             if (this.manualQuerys.TextLength == 0)
             {
                 MessageBox.Show("The query is empty");
                 return;
             }
-
             var text = this.manualQuerys.Text;
+            string command ="";
+            for (int i = 0; i < text.Length; i++)
+            {
+                if(text.ElementAt(i).Equals(';'))
+                {
+                    break;
+                }
+                else
+                {
+                    command += text.ElementAt(i);
+                }
+            }
+            try
+            {
+                await this.Consulta(command, "QUERY");
+            }
+            catch (Exception ea)
+            {
+                MessageBox.Show("Error in command");
 
+            }
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
