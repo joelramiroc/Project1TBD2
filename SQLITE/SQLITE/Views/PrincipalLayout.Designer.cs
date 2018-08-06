@@ -179,19 +179,19 @@ namespace SQLITE
             this.toolStripMenuItem1,
             this.toolStripMenuItem2});
             this.menuMenus.Name = "contextMenuStrip1";
-            this.menuMenus.Size = new System.Drawing.Size(153, 70);
+            this.menuMenus.Size = new System.Drawing.Size(97, 48);
             this.menuMenus.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening_1);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(96, 22);
             this.toolStripMenuItem1.Text = "Edit";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(96, 22);
             this.toolStripMenuItem2.Text = "Add";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
@@ -199,7 +199,7 @@ namespace SQLITE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(904, 310);
+            this.ClientSize = new System.Drawing.Size(904, 512);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.manualQuerys);
             this.Controls.Add(this.groupBox2);

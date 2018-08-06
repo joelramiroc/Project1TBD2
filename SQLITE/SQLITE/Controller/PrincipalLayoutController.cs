@@ -15,6 +15,7 @@ namespace SQLITE.Controller
         DataBaseConnection db;
         bool isConnect;
         DatabaseModel database;
+        public TreeNode TreeNodeTables;
 
         public DatabaseModel DatabaseModel { get; set; }
 
@@ -58,7 +59,7 @@ namespace SQLITE.Controller
                     Type = NodeType.Menu
                 }
             };
-
+            this.TreeNodeTables = tables;
             treeNodes.Add(tables);
 
 

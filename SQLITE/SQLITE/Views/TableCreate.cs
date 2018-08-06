@@ -14,7 +14,9 @@ namespace SQLITE.Views
 {
     public partial class TableCreate : Form
     {
-        public string query { get; set; }
+        public string Query { get; set; }
+
+        public string TableName { get; set; }
 
         public TableCreate()
         {
@@ -49,9 +51,18 @@ namespace SQLITE.Views
                 MessageBox.Show("Write one column minim");
                 return;
             }
-
-            this.query = await this.GetQuery();
-            this.ddl.Text = this.query;
+            this.TableName = this.tableName.Text;
+            this.Query = await this.GetQuery();
+            this.ddl.Text = this.Query;
+            string caption = "Advertence";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result;
+            result = MessageBox.Show("Are you sure", caption, buttons);
+            if(result == DialogResult.Yes)
+            {
+                DialogResult = DialogResult.OK;
+                this.Close();
+            }
         }
 
         public async Task<string>GetQuery()
@@ -114,7 +125,7 @@ namespace SQLITE.Views
                     query += column;
                 }
             }
-
+            query += " )";
             return query;
         }
 

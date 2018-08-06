@@ -279,10 +279,31 @@ namespace SQLITE
 
         }
 
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        private async void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             this.TableCreate = new TableCreate();
-            this.TableCreate.Show();
+
+            if (TableCreate.ShowDialog() == DialogResult.OK)
+            {
+                var result = await this.controller.ExecuteConsult(TableCreate.Query);
+                if (result == 0)
+                {
+                    var nodo = new TreeNode()
+                    {
+                        Text = TableCreate.TableName,
+                        Tag = new NodeInfo
+                        {
+                            Id =0,
+                            Type = NodeType.Table
+                        }
+                    };
+                    this.controller.TreeNodeTables.Nodes.Add(nodo);
+                }
+                else
+                {
+                    MessageBox.Show("Not was create the table");
+                }
+            }
         }
     }
 }
