@@ -15,6 +15,7 @@ namespace SQLITE
         PrincipalLayoutController controller;
         bool isConnect;
         TableCreate TableCreate;
+        CreateView CreateView;
 
         public PrincipalLayout()
         {
@@ -281,29 +282,69 @@ namespace SQLITE
 
         private async void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            this.TableCreate = new TableCreate();
-
-            if (TableCreate.ShowDialog() == DialogResult.OK)
+            var node = (TreeNode)this.menuMenus.Tag;
+            if (node == null)
             {
-                var result = await this.controller.ExecuteConsult(TableCreate.Query);
-                if (result == 0)
+                return;
+            }
+            if (node.Text.Equals("TABLES"))
+            {
+                this.TableCreate = new TableCreate();
+
+                if (TableCreate.ShowDialog() == DialogResult.OK)
                 {
-                    var nodo = new TreeNode()
+                    try
                     {
-                        Text = TableCreate.TableName,
-                        Tag = new NodeInfo
+
+                        var result = await this.controller.ExecuteConsult(TableCreate.Query);
+                        if (result == 0)
                         {
-                            Id =0,
-                            Type = NodeType.Table
+                            this.controller.TreeNodeTables.Nodes.Add(TableCreate.Table);
+                            MessageBox.Show("The table was crate suscefully");
                         }
-                    };
-                    this.controller.TreeNodeTables.Nodes.Add(nodo);
-                }
-                else
-                {
-                    MessageBox.Show("Not was create the table");
+                        else
+                        {
+                            MessageBox.Show("Not was create the table");
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                        MessageBox.Show("Internal error");
+                    }
                 }
             }
+            else if (node.Text.Equals("VIEWS"))
+            {
+                this.CreateView = new CreateView();
+                if (this.CreateView.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        var query = this.CreateView.Sql;
+                        var result = await this.controller.ExecuteConsult(query);
+                        if (result == 0)
+                        {
+                            await this.controller.ReloadViews();
+                            MessageBox.Show("The view was crate suscefully");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Not was create the view");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Internal error");
+                    }
+
+                }
+            }
+            else if (node.Text.Equals("TRIGGERS"))
+            {
+              
+            }
+           
         }
     }
 }

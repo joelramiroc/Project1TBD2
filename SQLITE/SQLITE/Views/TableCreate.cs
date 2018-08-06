@@ -1,4 +1,5 @@
 ﻿using SQLITE.Models;
+using SQLITE.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +17,7 @@ namespace SQLITE.Views
     {
         public string Query { get; set; }
 
-        public string TableName { get; set; }
+        public TreeNode Table { get; set; }
 
         public TableCreate()
         {
@@ -51,24 +52,25 @@ namespace SQLITE.Views
                 MessageBox.Show("Write one column minim");
                 return;
             }
-            this.TableName = this.tableName.Text;
             this.Query = await this.GetQuery();
             this.ddl.Text = this.Query;
             string caption = "Advertence";
             MessageBoxButtons buttons = MessageBoxButtons.YesNo;
             DialogResult result;
             result = MessageBox.Show("Are you sure", caption, buttons);
-            if(result == DialogResult.Yes)
+            if (result == DialogResult.Yes)
             {
                 DialogResult = DialogResult.OK;
                 this.Close();
             }
         }
 
-        public async Task<string>GetQuery()
+        public async Task<string> GetQuery()
         {
             string query = $"Create table {this.tableName.Text} ( ";
             List<String> columns = new List<string>();
+            TableModel tableModel = new TableModel();
+            tableModel.TableName = this.tableName.Text;
 
             for (int i = 0; i < this.dataGridView1.RowCount - 1; i++)
             {
@@ -99,8 +101,16 @@ namespace SQLITE.Views
                 {
                     data.DefaultValue = defaultValue;
                 }
+
+
+
                 if (!String.IsNullOrEmpty(data.ColumnName) && !String.IsNullOrEmpty(data.DateType))
                 {
+                    var columModel = new Models.ColumnModel
+                    {
+                        ColumnName = data.ColumnName
+                    };
+                    tableModel.Columns.Add(columModel);
                     var column = $"{data.ColumnName} {data.DateType} ";
                     if (data.IsPrimaryKey != null && data.IsPrimaryKey.Value)
                     {
@@ -126,6 +136,23 @@ namespace SQLITE.Views
                 }
             }
             query += " )";
+
+            this.Table = new TreeNode(tableModel.TableName, tableModel.Columns.Select(x => new TreeNode
+            {
+                Text = x.ColumnName,
+                Tag = new NodeInfo
+                {
+                    Id = 0,
+                    Type = NodeType.Column
+                }
+            }).ToArray());
+
+            Table.Tag = new NodeInfo
+            {
+                Id = 0,
+                Type = NodeType.Table
+            };
+
             return query;
         }
 

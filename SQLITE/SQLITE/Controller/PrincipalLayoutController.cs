@@ -14,8 +14,10 @@ namespace SQLITE.Controller
     {
         DataBaseConnection db;
         bool isConnect;
-        DatabaseModel database;
+        DatabaseModel datab;
         public TreeNode TreeNodeTables;
+        public TreeNode TreeNodeViews;
+        public TreeNode TreeNodeTriggers;
 
         public DatabaseModel DatabaseModel { get; set; }
 
@@ -23,7 +25,9 @@ namespace SQLITE.Controller
         {
             this.DatabaseModel = new DatabaseModel();
             this.db = new DataBaseConnection();
-
+            this.TreeNodeTables = new TreeNode();
+            this.TreeNodeViews = new TreeNode();
+            this.TreeNodeTriggers = new TreeNode();
         }
 
         public async Task<bool> CloseDataBase()
@@ -38,16 +42,16 @@ namespace SQLITE.Controller
 
         public async Task<DatabaseModel> GethDataBase()
         {
-            this.database = new DatabaseModel();
-            this.database.Triggers = await this.db.GetTriggersDataBase();
-            this.database.Tables = await this.db.GetTablesDataBase();
-            this.database.Views = await this.db.GetViewsDataBase();
-            return database;
+            this.datab = new DatabaseModel();
+            this.datab.Triggers = await this.db.GetTriggersDataBase();
+            this.datab.Tables = await this.db.GetTablesDataBase();
+            this.datab.Views = await this.db.GetViewsDataBase();
+            return datab;
         }
 
         public async Task<List<TreeNode>> GethTreeNodes()
         {
-            var datab = await this.GethDataBase();
+            await this.GethDataBase();
 
             List<TreeNode> treeNodes = new List<TreeNode>();
             var tables = new TreeNode("TABLES")
@@ -73,6 +77,8 @@ namespace SQLITE.Controller
                     Type = NodeType.Menu
                 }
             };
+
+            this.TreeNodeViews.Nodes.Add(views);
             treeNodes.Add(views);
 
             var triggers = new TreeNode("TRIGGERS")
@@ -86,6 +92,7 @@ namespace SQLITE.Controller
             };
 
             treeNodes.Add(triggers);
+            this.TreeNodeTriggers.Nodes.Add(triggers);
 
             triggers.Nodes.AddRange(
                 datab.Triggers.Select(S => new TreeNode
@@ -136,7 +143,7 @@ namespace SQLITE.Controller
 
         public async Task<DataSet> DataSet(string query, string text)
         {
-            return await this.db.DataSet(query,text);
+            return await this.db.DataSet(query, text);
         }
 
         public async Task<SQLiteDataReader> Consulta(string query)
@@ -148,5 +155,24 @@ namespace SQLITE.Controller
         {
             return await this.db.ExecuteQuery(query);
         }
+
+        public async Task<bool> ReloadViews()
+        {
+            await this.db.GetViewsDataBase();
+            this.TreeNodeViews.Nodes.Clear();
+            this.TreeNodeViews.Nodes.AddRange(
+                            datab.Views.Select(s => new TreeNode
+                            {
+                                Text = s.ViewName,
+                                Tag = new NodeInfo
+                                {
+                                    Id = 0,
+                                    Type = NodeType.View
+                                }
+                            }).ToArray());
+            return true;
+        }
+
+
     }
 }

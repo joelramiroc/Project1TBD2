@@ -34,10 +34,10 @@
             this.PrimaryKey = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.IsNull = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.AutoIncrement = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.DefaultValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.DefaultValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ddl = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -82,6 +82,11 @@
             this.AutoIncrement.HeaderText = "AutoIncrement";
             this.AutoIncrement.Name = "AutoIncrement";
             // 
+            // DefaultValue
+            // 
+            this.DefaultValue.HeaderText = "DefaultValue";
+            this.DefaultValue.Name = "DefaultValue";
+            // 
             // tableName
             // 
             this.tableName.Location = new System.Drawing.Point(109, 49);
@@ -100,18 +105,13 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(598, 300);
+            this.button1.Location = new System.Drawing.Point(618, 354);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 7;
-            this.button1.Text = "Generate DDL";
+            this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // DefaultValue
-            // 
-            this.DefaultValue.HeaderText = "DefaultValue";
-            this.DefaultValue.Name = "DefaultValue";
             // 
             // ddl
             // 
