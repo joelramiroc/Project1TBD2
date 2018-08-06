@@ -97,25 +97,27 @@ namespace SQLite.Services
                 views.Add(new ViewModel
                 {
                     Id = 0,
-                    ViewName = result["name"].ToString()
+                    ViewName = result["name"].ToString(),
+                    Sql = result["sql"].ToString(),
                 });
             }
 
             return views;
         }
 
-        public async Task<List<ViewModel>> GetTriggersDataBase()
+        public async Task<List<TriggerModel>> GetTriggersDataBase()
         {
-            var triggers = new List<ViewModel>();
+            var triggers = new List<TriggerModel>();
             string query = @"select * FROM sqlite_master WHERE type ='trigger'";
             SQLiteCommand sQLiteCommand3 = new SQLiteCommand(query, this.SQLiteConnection);
             var result = sQLiteCommand3.ExecuteReader();
             while (result.Read())
             {
-                triggers.Add(new ViewModel
+                triggers.Add(new TriggerModel
                 {
                     Id = 0,
-                    ViewName = result["name"].ToString()
+                    TriggerName = result["name"].ToString(),
+                    Sql = result["sql"].ToString(),
                 });
             }
 
@@ -137,6 +139,7 @@ namespace SQLite.Services
             {
                 return false;
             }
+
             return await this.OpenConecttionDatabase();
         }
 

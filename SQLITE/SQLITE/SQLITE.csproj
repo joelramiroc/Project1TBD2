@@ -65,20 +65,29 @@
   <ItemGroup>
     <Compile Include="Controller\PrincipalLayoutController.cs" />
     <Compile Include="Models\ColumnModel.cs" />
+    <Compile Include="Models\DatabaseModel.cs" />
     <Compile Include="Models\TableModel.cs" />
+    <Compile Include="Models\TriggerModel.cs" />
     <Compile Include="Models\ViewModel.cs" />
-    <Compile Include="PrincipalLayout.cs">
+    <Compile Include="Services\NodeType.cs" />
+    <Compile Include="Views\PrincipalLayout.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PrincipalLayout.Designer.cs">
+    <Compile Include="Views\PrincipalLayout.Designer.cs">
       <DependentUpon>PrincipalLayout.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\NodeType.cs" />
+    <Compile Include="Services\DateType.cs" />
     <Compile Include="Services\DataBaseManager.cs" />
     <Compile Include="Services\NodeInfo.cs" />
-    <EmbeddedResource Include="PrincipalLayout.resx">
+    <Compile Include="Views\TableCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\TableCreate.Designer.cs">
+      <DependentUpon>TableCreate.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Views\PrincipalLayout.resx">
       <DependentUpon>PrincipalLayout.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -91,6 +100,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\TableCreate.resx">
+      <DependentUpon>TableCreate.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

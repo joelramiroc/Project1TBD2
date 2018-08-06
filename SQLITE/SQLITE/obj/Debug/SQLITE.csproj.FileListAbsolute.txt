@@ -56,3 +56,4 @@ C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\De
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.csproj.CopyComplete
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.exe
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.pdb
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.TableCreate.resources

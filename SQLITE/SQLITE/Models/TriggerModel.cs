@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace SQLITE.Models
 {
-    public class ViewModel
+    public class TriggerModel
     {
-        public int Id { get; set; }
-
-        public string ViewName { get; set; }
+        public string TriggerName { get; set; }
 
         public string Sql { get; set; }
+
+        public int Id { get; set; }
     }
 }
