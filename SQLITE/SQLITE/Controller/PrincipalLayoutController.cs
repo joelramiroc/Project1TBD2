@@ -160,19 +160,20 @@ namespace SQLITE.Controller
         {
             await this.db.GetViewsDataBase();
             this.TreeNodeViews.Nodes.Clear();
-            this.TreeNodeViews.Nodes.AddRange(
-                            datab.Views.Select(s => new TreeNode
-                            {
-                                Text = s.ViewName,
-                                Tag = new NodeInfo
-                                {
-                                    Id = 0,
-                                    Type = NodeType.View
-                                }
-                            }).ToArray());
+            //var nodess = this.TreeNodeViews.Nodes.
+            //this.TreeNodeViews.Nodes.AddRange(
+            //                datab.Views.Select(s => new TreeNode
+            //                {
+            //                    Text = s.ViewName,
+            //                    Tag = new NodeInfo
+            //                    {
+            //                        Id = 0,
+            //                        Type = NodeType.View
+            //                    }
+            //                }).ToArray());
+            await this.GethDataBase();
             return true;
+
         }
-
-
     }
 }

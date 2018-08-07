@@ -70,6 +70,12 @@
     <Compile Include="Models\TriggerModel.cs" />
     <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Services\NodeType.cs" />
+    <Compile Include="Views\CreateTrigger.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CreateTrigger.Designer.cs">
+      <DependentUpon>CreateTrigger.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CreateView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,6 +99,9 @@
     <Compile Include="Views\TableCreate.Designer.cs">
       <DependentUpon>TableCreate.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\CreateTrigger.resx">
+      <DependentUpon>CreateTrigger.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\CreateView.resx">
       <DependentUpon>CreateView.cs</DependentUpon>
     </EmbeddedResource>

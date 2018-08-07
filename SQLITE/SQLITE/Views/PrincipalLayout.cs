@@ -16,6 +16,7 @@ namespace SQLITE
         bool isConnect;
         TableCreate TableCreate;
         CreateView CreateView;
+        CreateTrigger CreateTrigger;
 
         public PrincipalLayout()
         {
@@ -85,7 +86,7 @@ namespace SQLITE
                     this.menuMenus.Tag = node;
                     this.menuMenus.Show(Cursor.Position);
                 }
-                else if (nodeInfo.Type == NodeType.Table)
+                else if (nodeInfo.Type == NodeType.Table || nodeInfo.Type == NodeType.View || nodeInfo.Type == NodeType.Trigger)
                 {
                     this.menuElements.Tag = node;
                     this.menuElements.Show(Cursor.Position);
@@ -210,9 +211,104 @@ namespace SQLITE
 
         }
 
-        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //edit
+            var node = (TreeNode)this.menuMenus.Tag;
+            if (node == null)
+            {
+                return;
+            }
+            if (node.Text.Equals("TABLES"))
+            {
+                this.CreateView = new CreateView(false);
+                if (this.CreateView.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        var query = this.CreateView.Sql;
+                        var result = await this.controller.ExecuteConsult(query);
+                        if (result == 0)
+                        {
+                            this.treeViewDataConecction.Nodes.Clear();
+                            var nodes = (await this.controller.GethTreeNodes()).ToArray();
+                            this.treeViewDataConecction.Nodes.AddRange(nodes);
+                            MessageBox.Show("The view was edited suscefully");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Not was edited the view");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Internal error");
+                    }
+
+                }
+            }
+            else if (node.Text.Equals("VIEWS"))
+            {
+                this.CreateView = new CreateView(false);
+                if (this.CreateView.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        var query = this.CreateView.Sql;
+                        var result = await this.controller.ExecuteConsult(query);
+                        if (result == 0)
+                        {
+                            this.treeViewDataConecction.Nodes.Clear();
+                            var nodes = (await this.controller.GethTreeNodes()).ToArray();
+                            this.treeViewDataConecction.Nodes.AddRange(nodes);
+                            MessageBox.Show("The view was edited suscefully");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Not was edited the view");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Internal error");
+                    }
+
+                }
+            }
+            else if (node.Text.Equals("TRIGGERS"))
+            {
+
+                this.CreateTrigger = new CreateTrigger(false);
+                if (this.CreateTrigger.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        var query = this.CreateTrigger.Sql;
+                        var result = await this.controller.ExecuteConsult(query);
+                        if (result == 0)
+                        {
+                            this.treeViewDataConecction.Nodes.Clear();
+                            var nodes = (await this.controller.GethTreeNodes()).ToArray();
+                            this.treeViewDataConecction.Nodes.AddRange(nodes);
+                            MessageBox.Show("The trigger was edited suscefully");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Not was edited the trigger");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Internal error");
+                    }
+
+                }
+
+            }
+            else
+            {
+
+            }
+
         }
 
         private void secondToolStripMenuItem_Click(object sender, EventArgs e)
@@ -259,6 +355,27 @@ namespace SQLITE
                             }
                         }
                     }
+                    else if (nodeInfo.Type == NodeType.View)
+                    {
+                        MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                        string caption = "Advertence";
+                        DialogResult result;
+                        result = MessageBox.Show("Are you sure", caption, buttons);
+                        if (result == DialogResult.Yes)
+                        {
+                            string query = $"drop view {node.Text}";
+                            var resultd = await this.controller.ExecuteConsult(query);
+                            if (resultd == 0)
+                            {
+                                node.Remove();
+                                MessageBox.Show("The view was drop succefully");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Any internal error.");
+                            }
+                        }
+                    }
                     else
                     {
                         MessageBox.Show("Anny internal error");
@@ -277,7 +394,6 @@ namespace SQLITE
 
         private void contextMenuStrip1_Opening_1(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
         }
 
         private async void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -299,7 +415,9 @@ namespace SQLITE
                         var result = await this.controller.ExecuteConsult(TableCreate.Query);
                         if (result == 0)
                         {
-                            this.controller.TreeNodeTables.Nodes.Add(TableCreate.Table);
+                            this.treeViewDataConecction.Nodes.Clear();
+                            var nodes = (await this.controller.GethTreeNodes()).ToArray();
+                            this.treeViewDataConecction.Nodes.AddRange(nodes);
                             MessageBox.Show("The table was crate suscefully");
                         }
                         else
@@ -316,7 +434,7 @@ namespace SQLITE
             }
             else if (node.Text.Equals("VIEWS"))
             {
-                this.CreateView = new CreateView();
+                this.CreateView = new CreateView(true);
                 if (this.CreateView.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -325,7 +443,9 @@ namespace SQLITE
                         var result = await this.controller.ExecuteConsult(query);
                         if (result == 0)
                         {
-                            await this.controller.ReloadViews();
+                            this.treeViewDataConecction.Nodes.Clear();
+                            var nodes = (await this.controller.GethTreeNodes()).ToArray();
+                            this.treeViewDataConecction.Nodes.AddRange(nodes);
                             MessageBox.Show("The view was crate suscefully");
                         }
                         else
@@ -342,9 +462,32 @@ namespace SQLITE
             }
             else if (node.Text.Equals("TRIGGERS"))
             {
-              
+                this.CreateTrigger = new CreateTrigger(true);
+                if (this.CreateTrigger.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        var query = this.CreateTrigger.Sql;
+                        var result = await this.controller.ExecuteConsult(query);
+                        if (result == 0)
+                        {
+                            this.treeViewDataConecction.Nodes.Clear();
+                            var nodes = (await this.controller.GethTreeNodes()).ToArray();
+                            this.treeViewDataConecction.Nodes.AddRange(nodes);
+                            MessageBox.Show("The trigger was crate suscefully");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Not was create the trigger");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Internal error");
+                    }
+                }
             }
-           
+
         }
     }
 }

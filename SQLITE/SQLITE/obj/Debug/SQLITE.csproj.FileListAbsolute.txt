@@ -17,25 +17,6 @@ C:\Users\Joel Caballero\source\repos\SQLITE\SQLITE\bin\Debug\System.Data.SQLite.
 C:\Users\Joel Caballero\source\repos\SQLITE\SQLITE\obj\Debug\SQLITE.exe
 C:\Users\Joel Caballero\source\repos\SQLITE\SQLITE\obj\Debug\SQLITE.pdb
 C:\Users\Joel Caballero\source\repos\SQLITE\SQLITE\obj\Debug\SQLITE.csprojResolveAssemblyReference.cache
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\SQLITE.exe.config
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\SQLITE.exe
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\SQLITE.pdb
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\EntityFramework.dll
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\EntityFramework.SqlServer.dll
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\System.Data.SQLite.dll
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\System.Data.SQLite.EF6.dll
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\System.Data.SQLite.Linq.dll
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\EntityFramework.xml
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\System.Data.SQLite.xml
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\System.Data.SQLite.dll.config
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.csprojResolveAssemblyReference.cache
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Properties.Resources.resources
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.csproj.GenerateResource.Cache
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.csproj.CoreCompileInputs.cache
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.exe
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.pdb
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.PrincipalLayout.resources
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\SQLITE.exe.config
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\SQLITE.exe
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\SQLITE.pdb
@@ -55,7 +36,28 @@ C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\De
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.csproj.CopyComplete
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.exe
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.pdb
-C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.TableCreate.resources
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.TableCreate.resources
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.CreateView.resources
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.csprojAssemblyReference.cache
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.csprojResolveAssemblyReference.cache
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\SQLITE.exe.config
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\SQLITE.exe
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\SQLITE.pdb
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\EntityFramework.dll
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\System.Data.SQLite.dll
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\EntityFramework.xml
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\System.Data.SQLite.xml
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\bin\Debug\System.Data.SQLite.dll.config
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.CreateView.resources
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.PrincipalLayout.resources
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Properties.Resources.resources
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.TableCreate.resources
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.csproj.GenerateResource.Cache
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.csproj.CoreCompileInputs.cache
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.exe
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.pdb
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.CreateTrigger.resources
