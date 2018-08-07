@@ -93,6 +93,7 @@
             this.tableName.Name = "tableName";
             this.tableName.Size = new System.Drawing.Size(243, 20);
             this.tableName.TabIndex = 6;
+            this.tableName.TextChanged += new System.EventHandler(this.tableName_TextChanged);
             // 
             // label1
             // 

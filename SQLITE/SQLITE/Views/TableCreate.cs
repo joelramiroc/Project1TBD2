@@ -19,11 +19,13 @@ namespace SQLITE.Views
 
         public TreeNode Table { get; set; }
 
-        public TableCreate()
+        string lastSql;
+
+        public TableCreate(bool isNew, string lastQuery)
         {
             InitializeComponent();
             this.AddComboBox();
-
+            this.lastSql = lastQuery;
             this.dataGridView1.RowsAdded += DataGridView1_RowsAdded;
         }
 
@@ -162,6 +164,11 @@ namespace SQLITE.Views
         }
 
         private void ddl_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tableName_TextChanged(object sender, EventArgs e)
         {
 
         }

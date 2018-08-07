@@ -7,28 +7,36 @@ namespace SQLITE.Views
     {
         public string Sql { get; set; }
 
-        string query;
+        string query, lastSql;
+        bool isNew;
 
-        public CreateTrigger(bool isNew)
+        public CreateTrigger(bool isNew, string lastSql)
         {
             InitializeComponent();
-            this.query = @"
-                CREATE TRIGGER[IF NOT EXISTS] trigger_name \n
-  [BEFORE | AFTER | INSTEAD OF][INSERT | UPDATE | DELETE] \n
-   ON table_name \n
-   [WHEN condition] \n
-BEGIN \n
- statements; \n
-            END; \n
-            ";
-
+            this.query = @" CREATE TRIGGER[IF NOT EXISTS] trigger_name \n"+
+                "[BEFORE | AFTER | INSTEAD OF][INSERT | UPDATE | DELETE] \n"+
+                "ON table_name \n"+
+                "[WHEN condition] \n"+
+                "BEGIN \n"+
+                "statements; \n"+
+                "END; \n";
+            this.isNew = isNew;
+            this.lastSql = lastSql;
             this.LoadBasicSql();
         }
 
 
         private async void LoadBasicSql()
         {
-            this.ddl.Text = this.query;
+            if (this.isNew)
+            {
+                this.ddl.Text = this.lastSql;
+                this.button1.Text = "Edit";
+            }
+            else
+            {
+                this.ddl.Text = this.query;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

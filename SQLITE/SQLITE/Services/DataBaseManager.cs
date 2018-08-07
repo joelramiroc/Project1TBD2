@@ -34,7 +34,6 @@ namespace SQLite.Services
             return false;
         }
 
-
         public async Task<bool> OpenConecttionDatabase()
         {
             if (this.SQLiteConnection.State != ConnectionState.Open)

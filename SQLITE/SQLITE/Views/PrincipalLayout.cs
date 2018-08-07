@@ -213,14 +213,19 @@ namespace SQLITE
 
         private async void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var node = (TreeNode)this.menuMenus.Tag;
+            var node = (TreeNode)this.menuElements.Tag;
             if (node == null)
             {
                 return;
             }
-            if (node.Text.Equals("TABLES"))
+            var parent = (TreeNode)node.Parent;
+            if (parent == null)
             {
-                this.CreateView = new CreateView(false);
+                return;
+            }
+            if (parent.Text.Equals("TABLES"))
+            {
+                this.CreateView = new CreateView(false, "");
                 if (this.CreateView.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -246,9 +251,18 @@ namespace SQLITE
 
                 }
             }
-            else if (node.Text.Equals("VIEWS"))
+            else if (parent.Text.Equals("VIEWS"))
             {
-                this.CreateView = new CreateView(false);
+                string querys = $"select * from sqlite_master where name = '{node.Text}' and type = 'view'";
+                var results = await this.controller.Consulta(querys);
+                var c = $"drop view {node.Text} ; \n \n";
+
+                while (results.Read())
+                {
+                    c += results["sql"].ToString();
+
+                }
+                this.CreateView = new CreateView(false, c);
                 if (this.CreateView.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -267,17 +281,27 @@ namespace SQLITE
                             MessageBox.Show("Not was edited the view");
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ews)
                     {
-                        MessageBox.Show("Internal error");
+                        MessageBox.Show("Internal error: \n" + ews.Message);
                     }
 
                 }
             }
-            else if (node.Text.Equals("TRIGGERS"))
+            else if (parent.Text.Equals("TRIGGERS"))
             {
 
-                this.CreateTrigger = new CreateTrigger(false);
+                string querys = $"select * from sqlite_master where name = '{node.Text}' and type = 'trigger'";
+                var results = await this.controller.Consulta(querys);
+                var c = $"drop trigger {node.Text} ; \n \n";
+
+                while (results.Read())
+                {
+                    c += results["sql"].ToString();
+
+                }
+
+                this.CreateTrigger = new CreateTrigger(false, c);
                 if (this.CreateTrigger.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -296,13 +320,11 @@ namespace SQLITE
                             MessageBox.Show("Not was edited the trigger");
                         }
                     }
-                    catch (Exception)
+                    catch (Exception exc)
                     {
-                        MessageBox.Show("Internal error");
+                        MessageBox.Show("Internal error :" + exc.Message);
                     }
-
                 }
-
             }
             else
             {
@@ -405,7 +427,7 @@ namespace SQLITE
             }
             if (node.Text.Equals("TABLES"))
             {
-                this.TableCreate = new TableCreate();
+                this.TableCreate = new TableCreate(true, string.Empty);
 
                 if (TableCreate.ShowDialog() == DialogResult.OK)
                 {
@@ -434,7 +456,7 @@ namespace SQLITE
             }
             else if (node.Text.Equals("VIEWS"))
             {
-                this.CreateView = new CreateView(true);
+                this.CreateView = new CreateView(true, string.Empty);
                 if (this.CreateView.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -462,7 +484,7 @@ namespace SQLITE
             }
             else if (node.Text.Equals("TRIGGERS"))
             {
-                this.CreateTrigger = new CreateTrigger(true);
+                this.CreateTrigger = new CreateTrigger(true, string.Empty);
                 if (this.CreateTrigger.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -488,6 +510,27 @@ namespace SQLITE
                 }
             }
 
+        }
+
+        private void viewInfoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            var node = (TreeNode)this.menuElements.Tag;
+            if (node == null)
+            {
+                MessageBox.Show("Anny internal error");
+                return;
+            }
+            var nodeInfo = (NodeInfo)node.Tag;
+            if (nodeInfo == null)
+            {
+                MessageBox.Show("Anny internal error");
+                return;
+            }
+            if (nodeInfo.Type == NodeType.Table)
+            {
+
+            }
         }
     }
 }

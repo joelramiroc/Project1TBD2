@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SQLITE.Views
@@ -14,15 +7,14 @@ namespace SQLITE.Views
     {
         public string Sql { get; set; }
 
-        string query;
+        bool isNew;
+        string query,lastQuery;
 
-        public CreateView(bool isNew)
+        public CreateView(bool isNew, string lastQuery)
         {
+            this.lastQuery = lastQuery;
+            this.isNew = isNew;
             InitializeComponent();
-            this.query = "Create view [VIEWNAME] \n" +
-                "AS \n \n" +
-                "";
-
             this.LoadBasicSql();
         }
 
@@ -49,6 +41,18 @@ namespace SQLITE.Views
 
         private async void LoadBasicSql()
         {
+            if (this.isNew)
+            {
+                this.query = "Create view [VIEWNAME] \n" +
+                "AS \n \n" +
+                "";
+                this.button1.Text = "Edit";
+            }
+            else
+            {
+                this.query = this.lastQuery;
+            }
+
             this.ddl.Text = this.query;
         }
     }

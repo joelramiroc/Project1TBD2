@@ -93,6 +93,12 @@
     <Compile Include="Services\DateType.cs" />
     <Compile Include="Services\DataBaseManager.cs" />
     <Compile Include="Services\NodeInfo.cs" />
+    <Compile Include="Views\RegisterOfTableView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\RegisterOfTableView.Designer.cs">
+      <DependentUpon>RegisterOfTableView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\TableCreate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +124,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\RegisterOfTableView.resx">
+      <DependentUpon>RegisterOfTableView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\TableCreate.resx">
       <DependentUpon>TableCreate.cs</DependentUpon>
     </EmbeddedResource>
