@@ -14,9 +14,15 @@ namespace SQLITE.Models
             {
                 this.Columns = new List<ColumnModel>();
             }
+            if (this.Indexs == null)
+            {
+                this.Indexs = new List<IndexModel>();
+            }
         }
         public string TableName { get; set; }
 
         public List<ColumnModel> Columns { get; set; }
+
+        public List<IndexModel> Indexs { get; set; }
     }
 }

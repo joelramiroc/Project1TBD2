@@ -17,7 +17,8 @@ namespace SQLITE
         TableCreate TableCreate;
         CreateView CreateView;
         CreateTrigger CreateTrigger;
-
+        RegisterOfTableView RegisterOfTableView;
+        CreateIndex CreateIndex;
         public PrincipalLayout()
         {
             InitializeComponent();
@@ -42,7 +43,7 @@ namespace SQLITE
             }
             else if (nodeInfo.Type == NodeType.Table)
             {
-                string query = $"select * from {node.Text}";
+                string query = $"pragma table_info('{node.Text}')";
                 await this.Consulta(query, node.Text);
             }
             else if (nodeInfo.Type == NodeType.View)
@@ -509,10 +510,37 @@ namespace SQLITE
                     }
                 }
             }
+            else if (node.Text.Equals("INDEXS"))
+            {
+                this.CreateIndex = new CreateIndex(true, "", this.controller.datab);
+                if (this.CreateIndex.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        var query = this.CreateIndex.Sql;
+                        var result = await this.controller.ExecuteConsult(query);
+                        if (result == 0)
+                        {
+                            this.treeViewDataConecction.Nodes.Clear();
+                            var nodes = (await this.controller.GethTreeNodes()).ToArray();
+                            this.treeViewDataConecction.Nodes.AddRange(nodes);
+                            MessageBox.Show("The index was crate suscefully");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Not was create the index");
+                        }
+                    }
+                    catch (Exception esx)
+                    {
+                        MessageBox.Show("Internal error:" + esx.Message);
+                    }
+                }
 
+            }
         }
 
-        private void viewInfoToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void viewInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
             var node = (TreeNode)this.menuElements.Tag;
@@ -529,7 +557,26 @@ namespace SQLITE
             }
             if (nodeInfo.Type == NodeType.Table)
             {
+                try
+                {
+                    string query = $"select * from {node.Text}";
+                    var dataSet = await this.controller.DataSet(query, node.Text);
+                    this.RegisterOfTableView = new RegisterOfTableView(node.Text, dataSet);
+                    if (this.RegisterOfTableView.ShowDialog() == DialogResult.OK)
+                    {
+                        MessageBox.Show("Cool");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Anny internal error");
+                    }
 
+                }
+                catch (Exception exc)
+                {
+
+                    MessageBox.Show("Internal error:" + exc.Message);
+                }
             }
         }
     }

@@ -64,12 +64,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\PrincipalLayoutController.cs" />
+    <Compile Include="Models\IndexModel.cs" />
     <Compile Include="Models\ColumnModel.cs" />
     <Compile Include="Models\DatabaseModel.cs" />
     <Compile Include="Models\TableModel.cs" />
     <Compile Include="Models\TriggerModel.cs" />
     <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Services\NodeType.cs" />
+    <Compile Include="Views\CreateIndex.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CreateIndex.Designer.cs">
+      <DependentUpon>CreateIndex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CreateTrigger.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,6 +112,9 @@
     <Compile Include="Views\TableCreate.Designer.cs">
       <DependentUpon>TableCreate.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\CreateIndex.resx">
+      <DependentUpon>CreateIndex.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\CreateTrigger.resx">
       <DependentUpon>CreateTrigger.cs</DependentUpon>
     </EmbeddedResource>

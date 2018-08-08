@@ -14,7 +14,7 @@ namespace SQLITE.Controller
     {
         DataBaseConnection db;
         bool isConnect;
-        DatabaseModel datab;
+        public DatabaseModel datab;
         public TreeNode TreeNodeTables;
         public TreeNode TreeNodeViews;
         public TreeNode TreeNodeTriggers;
@@ -45,6 +45,16 @@ namespace SQLITE.Controller
             this.datab = new DatabaseModel();
             this.datab.Triggers = await this.db.GetTriggersDataBase();
             this.datab.Tables = await this.db.GetTablesDataBase();
+            //foreach (var item in this.datab.Tables)
+            //{
+            //    try
+            //    {
+            //        item.Indexs = await this.db.GetIndexTable(item.TableName);
+            //    }
+            //    catch (System.Exception es)
+            //    {
+            //    }
+            //}
             this.datab.Views = await this.db.GetViewsDataBase();
             return datab;
         }
@@ -117,25 +127,78 @@ namespace SQLITE.Controller
                                 }
                             }).ToArray());
 
-            tables.Nodes.AddRange(
-                    datab.Tables.Select(sa =>
-                    new TreeNode(sa.TableName, sa.Columns.Select(tt => new TreeNode
+            foreach (var item in datab.Tables)
+            {
+                var column = new TreeNode
+                {
+                    Text = "COLUMNS",
+                    Tag = new NodeInfo
                     {
-                        Text = tt.ColumnName,
-                        Tag = new NodeInfo
-                        {
-                            Id = 0,
-                            Type = NodeType.Column
-                        }
-                    }).ToArray())
-                    {
-                        Tag = new NodeInfo
-                        {
-                            Id = 0,
-                            Type = NodeType.Table
-                        }
+                        Id = 0,
+                        Type = NodeType.Menu
                     }
-                ).ToArray());
+                };
+                column.Nodes.AddRange(item.Columns.Select(x => new TreeNode
+                {
+                    Text = x.ColumnName,
+                    Tag = new NodeInfo
+                    {
+                        Id = 0,
+                        Type = NodeType.Column
+                    }
+                }).ToArray()); 
+
+                var indexs = new TreeNode
+                {
+                    Text = "INDEXS",
+                    Tag = new NodeInfo
+                    {
+                        Id = 0,
+                        Type = NodeType.Menu
+                    }
+                };
+                indexs.Nodes.AddRange(item.Indexs.Select(x => new TreeNode
+                {
+                    Text = x.IndexNamenName,
+                    Tag = new NodeInfo
+                    {
+                        Id = 0,
+                        Type = NodeType.Index
+                    }
+                }).ToArray());
+                var tab = new TreeNode
+                {
+                    Text = item.TableName,
+                    Tag = new NodeInfo
+                    {
+                        Id = 0,
+                        Type = NodeType.Table
+                    }
+                };
+                this.TreeNodeTables.Nodes.Add(tab);
+                tab.Nodes.Add(column);
+                tab.Nodes.Add(indexs);
+            }
+
+            //tables.Nodes.AddRange(
+            //        datab.Tables.Select(sa =>
+            //        new TreeNode(sa.TableName, sa.Columns.Select(tt => new TreeNode
+            //        {
+            //            Text = tt.ColumnName,
+            //            Tag = new NodeInfo
+            //            {
+            //                Id = 0,
+            //                Type = NodeType.Column
+            //            }
+            //        }).ToArray())
+            //        {
+            //            Tag = new NodeInfo
+            //            {
+            //                Id = 0,
+            //                Type = NodeType.Table
+            //            }
+            //        }
+            //    ).ToArray());
 
 
             return treeNodes;
@@ -156,24 +219,5 @@ namespace SQLITE.Controller
             return await this.db.ExecuteQuery(query);
         }
 
-        public async Task<bool> ReloadViews()
-        {
-            await this.db.GetViewsDataBase();
-            this.TreeNodeViews.Nodes.Clear();
-            //var nodess = this.TreeNodeViews.Nodes.
-            //this.TreeNodeViews.Nodes.AddRange(
-            //                datab.Views.Select(s => new TreeNode
-            //                {
-            //                    Text = s.ViewName,
-            //                    Tag = new NodeInfo
-            //                    {
-            //                        Id = 0,
-            //                        Type = NodeType.View
-            //                    }
-            //                }).ToArray());
-            await this.GethDataBase();
-            return true;
-
-        }
     }
 }

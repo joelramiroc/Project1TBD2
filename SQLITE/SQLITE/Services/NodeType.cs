@@ -4,5 +4,6 @@
     Table,
     View,
     Column,
-    Trigger
+    Trigger,
+    Index
 }
