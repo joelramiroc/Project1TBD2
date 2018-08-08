@@ -45,16 +45,17 @@ namespace SQLITE.Controller
             this.datab = new DatabaseModel();
             this.datab.Triggers = await this.db.GetTriggersDataBase();
             this.datab.Tables = await this.db.GetTablesDataBase();
-            //foreach (var item in this.datab.Tables)
-            //{
-            //    try
-            //    {
-            //        item.Indexs = await this.db.GetIndexTable(item.TableName);
-            //    }
-            //    catch (System.Exception es)
-            //    {
-            //    }
-            //}
+            foreach (var item in this.datab.Tables)
+            {
+                try
+                {
+                    item.Indexs = await this.db.GetIndexTable(item.TableName);
+                }
+                catch (System.Exception es)
+                {
+                    var e = es.Message;
+                }
+            }
             this.datab.Views = await this.db.GetViewsDataBase();
             return datab;
         }

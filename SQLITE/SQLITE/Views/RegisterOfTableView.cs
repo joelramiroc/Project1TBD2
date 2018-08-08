@@ -9,11 +9,14 @@ namespace SQLITE.Views
 
         public DataSet DataSet { get; set; }
 
-        public RegisterOfTableView(string tableName,DataSet dataSet)
+        bool isCharging;
+
+        public RegisterOfTableView(string tableName, DataSet dataSet)
         {
             InitializeComponent();
             this.TableName = tableName;
             this.DataSet = dataSet;
+            this.isCharging = true;
             this.LoadData();
             this.dataGridView1.RowsAdded += DataGridView1_RowsAdded;
             this.dataGridView1.RowErrorTextChanged += DataGridView1_RowErrorTextChanged;
@@ -24,36 +27,73 @@ namespace SQLITE.Views
 
         private void DataGridView1_CurrentCellChanged(object sender, System.EventArgs e)
         {
-            string myString = "CurrentCellChanged event raised, cell focus is at ";
-            string myPoint = dataGridView1.CurrentCell.ColumnIndex + "," +
-                           dataGridView1.CurrentCell.RowIndex;
-            myString = myString + "(" + myPoint + ")";
-            MessageBox.Show(myString, "Current cell co-ordinates");
+            try
+            {
+
+                if (this.isCharging)
+                {
+                    return;
+                }
+                string myString = "CurrentCellChanged event raised, cell focus is at ";
+                string myPoint = dataGridView1.CurrentCell.ColumnIndex + "," +
+                               dataGridView1.CurrentCell.RowIndex;
+                myString = myString + "(" + myPoint + ")";
+                var strinsg = dataGridView1.Columns[dataGridView1.CurrentCell.ColumnIndex].Name;
+                MessageBox.Show(myString, "Current cell co-ordinates");
+
+            }
+            catch (System.Exception)
+            {
+            }
         }
 
         private void DataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
-            var row = e.RowIndex;
+            if (this.isCharging)
+            {
+                return;
+            }
+            try
+            {
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                var element = row.Cells[0].Value;
+            }
+            catch (System.Exception)
+            {
+            }
         }
 
         private void DataGridView1_RowErrorTextNeeded(object sender, DataGridViewRowErrorTextNeededEventArgs e)
         {
-            //throw new System.NotImplementedException();
+            if (this.isCharging)
+            {
+                return;
+            }
+            DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
         }
 
         private void DataGridView1_RowErrorTextChanged(object sender, DataGridViewRowEventArgs e)
         {
-            //throw new System.NotImplementedException();
+            if (this.isCharging)
+            {
+                return;
+            }
+            DataGridViewRow row = e.Row;
         }
 
         private void DataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
-            var row = e.RowIndex;
+            if (this.isCharging)
+            {
+                return;
+            }
+            DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
         }
 
-        public async void LoadData()
+        public void LoadData()
         {
             this.dataGridView1.DataSource = this.DataSet.Tables[0];
+            this.isCharging = false;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -75,7 +115,10 @@ namespace SQLITE.Views
 
         private void dataGridView1_AllowUserToDeleteRowsChanged(object sender, System.EventArgs e)
         {
-            var t = e;
+            if (this.isCharging)
+            {
+                return;
+            }
         }
     }
 }

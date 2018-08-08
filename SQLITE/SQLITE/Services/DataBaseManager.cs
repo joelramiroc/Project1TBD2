@@ -126,7 +126,7 @@ namespace SQLite.Services
         public async Task<List<IndexModel>> GetIndexTable(string tableName)
         {
             var indexs = new List<IndexModel>();
-            string query = $".indices { tableName}";
+            string query = $@"select * from sqlite_master where type='index' and tbl_name = '{ tableName}'";
             SQLiteCommand sQLiteCommand3 = new SQLiteCommand(query, this.SQLiteConnection);
             var result = sQLiteCommand3.ExecuteReader();
             while (result.Read())
