@@ -69,6 +69,7 @@
     <Compile Include="Models\DatabaseModel.cs" />
     <Compile Include="Models\TableModel.cs" />
     <Compile Include="Models\TriggerModel.cs" />
+    <Compile Include="Models\TriggerType.cs" />
     <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Services\NodeType.cs" />
     <Compile Include="Views\AlterTable.cs">

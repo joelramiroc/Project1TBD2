@@ -15,7 +15,7 @@ namespace SQLITE.Views
 
         public string Query { get; set; }
 
-        List<ColumnModel> ColumKeys;
+        List<ColumnModel> columEdites;
 
         List<ColumnModel> ColumnDeletes;
         List<ColumnModel> ColumnAdds;
@@ -36,7 +36,33 @@ namespace SQLITE.Views
 
         private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            var s = e;
+
+            var columName = this.dataGridView1.Rows[e.RowIndex].Cells[ColumName.Name].Value?.ToString();
+            var columType = this.dataGridView1.Rows[e.RowIndex].Cells[ColumType.Name].Value?.ToString();
+            var columPk = Convert.ToBoolean(this.dataGridView1.Rows[e.RowIndex].Cells[PrimaryKey.Name].Value);
+            var columIsNull = Convert.ToBoolean(this.dataGridView1.Rows[e.RowIndex].Cells[IsNull.Name].Value);
+            var columdefaultValue = this.dataGridView1.Rows[e.RowIndex].Cells[DefaultValue.Name].Value?.ToString();
+            var valueasd = (this.dataGridView1.Rows[e.RowIndex].Cells[Cid.Name].Value);
+            int? columCid = (this.dataGridView1.Rows[e.RowIndex].Cells[Cid.Name].Value)  == null ? -1 : Convert.ToInt32(this.dataGridView1.Rows[e.RowIndex].Cells[Cid.Name].Value);
+
+            if (columCid == -1)
+            {
+                return;
+            }
+
+            if (!String.IsNullOrEmpty(columName) && !String.IsNullOrEmpty(columType))
+            {
+                var columnModel = new ColumnModel
+                {
+                    ColumnName = columName,
+                    DateType = columType,
+                    DefaultValue = columdefaultValue,
+                    IsNull = columIsNull,
+                    IsPrimaryKey = columPk,
+                    Cid = columCid
+                };
+                this.columEdites.Add(columnModel);
+            }
         }
 
         private void DataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
@@ -65,8 +91,8 @@ namespace SQLITE.Views
 
         public async void LoadData()
         {
-            this.ColumKeys = new List<ColumnModel>();
-            this.ColumKeys = this.tableModel.Columns.Where(x => x.IsPrimaryKey == true).ToList();
+            this.columEdites = new List<ColumnModel>();
+            this.columEdites = this.tableModel.Columns.Where(x => x.IsPrimaryKey == true).ToList();
 
             foreach (var item in tableModel.Columns)
             {
