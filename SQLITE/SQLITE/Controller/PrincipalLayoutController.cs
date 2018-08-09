@@ -18,12 +18,10 @@ namespace SQLITE.Controller
         public TreeNode TreeNodeTables;
         public TreeNode TreeNodeViews;
         public TreeNode TreeNodeTriggers;
-
-        public DatabaseModel DatabaseModel { get; set; }
+        
 
         public PrincipalLayoutController()
         {
-            this.DatabaseModel = new DatabaseModel();
             this.db = new DataBaseConnection();
             this.TreeNodeTables = new TreeNode();
             this.TreeNodeViews = new TreeNode();

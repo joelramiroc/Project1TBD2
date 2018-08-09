@@ -5,6 +5,7 @@
 namespace SQLite.Services
 {
     using SQLITE.Models;
+    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SQLite;
@@ -17,6 +18,7 @@ namespace SQLite.Services
         public string DatabaseName { get; set; }
 
         public string Databasepath { get; set; }
+
 
         public async Task<bool> CreateDataBase(string path, string databaseName)
         {
@@ -73,12 +75,31 @@ namespace SQLite.Services
 
                 while (ColumResult.Read())
                 {
-                    var ColumnLeido = ColumResult["name"];
-                    tablemodel.Columns.Add(new ColumnModel
+                    try
                     {
-                        ColumnName = ColumnLeido.ToString()
-                    });
+                        var ColumnLeido = ColumResult["name"].ToString();
+                        var Columntype = ColumResult["type"].ToString();
+                        var Columnnotnull = Convert.ToBoolean(ColumResult["notnull"]);
+                        var ColumntsfltValue = ColumResult["dflt_value"].ToString();
+                        var columnscid = Convert.ToInt32(ColumResult["cid"]);
+                        var Columntspk = Convert.ToBoolean(ColumResult["pk"]);
+                        tablemodel.Columns.Add(new ColumnModel
+                        {
+                            ColumnName = ColumnLeido.ToString(),
+                            DateType = Columntype,
+                            Cid = columnscid,
+                            DefaultValue = ColumntsfltValue,
+                            IsNull = Columnnotnull,
+                            IsPrimaryKey = Columntspk
+                        });
+
+                    }
+                    catch (System.Exception asd)
+                    {
+                        var s = asd.Message;
+                    }
                 }
+
                 TableModels.Add(tablemodel);
             }
 
@@ -131,7 +152,7 @@ namespace SQLite.Services
             var result = sQLiteCommand3.ExecuteReader();
             while (result.Read())
             {
-                indexs.Add(new IndexModel 
+                indexs.Add(new IndexModel
                 {
                     Id = 0,
                     IndexNamenName = result["name"].ToString(),

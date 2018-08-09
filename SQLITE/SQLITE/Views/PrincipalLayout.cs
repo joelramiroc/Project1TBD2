@@ -1,4 +1,5 @@
 ﻿using SQLITE.Controller;
+using SQLITE.Models;
 using SQLITE.Services;
 using SQLITE.Views;
 using System;
@@ -19,6 +20,7 @@ namespace SQLITE
         CreateTrigger CreateTrigger;
         RegisterOfTableView RegisterOfTableView;
         CreateIndex CreateIndex;
+        AlterTable AlterTable;
         public PrincipalLayout()
         {
             InitializeComponent();
@@ -226,23 +228,28 @@ namespace SQLITE
             }
             if (parent.Text.Equals("TABLES"))
             {
-                this.CreateView = new CreateView(false, "");
-                if (this.CreateView.ShowDialog() == DialogResult.OK)
+                var table = this.controller.datab.Tables.Find(x => x.TableName.Equals(node.Text));
+                if (table == null)
+                {
+                    return;
+                }
+                this.AlterTable = new AlterTable(table);
+                if (this.AlterTable.ShowDialog() == DialogResult.OK)
                 {
                     try
                     {
-                        var query = this.CreateView.Sql;
+                        var query = this.AlterTable.Sql;
                         var result = await this.controller.ExecuteConsult(query);
                         if (result == 0)
                         {
                             this.treeViewDataConecction.Nodes.Clear();
                             var nodes = (await this.controller.GethTreeNodes()).ToArray();
                             this.treeViewDataConecction.Nodes.AddRange(nodes);
-                            MessageBox.Show("The view was edited suscefully");
+                            MessageBox.Show("The table was edited suscefully");
                         }
                         else
                         {
-                            MessageBox.Show("Not was edited the view");
+                            MessageBox.Show("Not was edited the table");
                         }
                     }
                     catch (Exception)

@@ -71,6 +71,12 @@
     <Compile Include="Models\TriggerModel.cs" />
     <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Services\NodeType.cs" />
+    <Compile Include="Views\AlterTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\AlterTable.Designer.cs">
+      <DependentUpon>AlterTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CreateIndex.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,6 +118,9 @@
     <Compile Include="Views\TableCreate.Designer.cs">
       <DependentUpon>TableCreate.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\AlterTable.resx">
+      <DependentUpon>AlterTable.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\CreateIndex.resx">
       <DependentUpon>CreateIndex.cs</DependentUpon>
     </EmbeddedResource>

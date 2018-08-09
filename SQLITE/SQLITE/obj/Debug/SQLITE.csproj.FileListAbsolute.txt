@@ -66,3 +66,4 @@ C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.View
 C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.CreateIndex.resources
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.CreateIndex.resources
 C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.RegisterOfTableView.resources
+C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.AlterTable.resources
