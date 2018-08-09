@@ -98,7 +98,7 @@
             // 
             // IsNull
             // 
-            this.IsNull.HeaderText = "IsNull";
+            this.IsNull.HeaderText = "NotNull";
             this.IsNull.Name = "IsNull";
             // 
             // DefaultValue

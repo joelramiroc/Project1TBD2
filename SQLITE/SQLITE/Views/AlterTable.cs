@@ -18,6 +18,7 @@ namespace SQLITE.Views
         List<ColumnModel> ColumKeys;
 
         List<ColumnModel> ColumnDeletes;
+        List<ColumnModel> ColumnAdds;
 
         public AlterTable(TableModel tableModel)
         {
@@ -26,8 +27,16 @@ namespace SQLITE.Views
             this.LoadData();
             this.AddComboBox();
             this.ColumnDeletes = new List<ColumnModel>();
+            this.ColumnAdds = new List<ColumnModel>();
             this.dataGridView1.RowsAdded += DataGridView1_RowsAdded;
             this.dataGridView1.RowsRemoved += DataGridView1_RowsRemoved;
+            this.dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
+        }
+
+
+        private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            var s = e;
         }
 
         private void DataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
@@ -87,7 +96,7 @@ namespace SQLITE.Views
 
         private async void button1_Click(object sender, EventArgs e)
         {
-
+            this.GetNewColumns();
             this.Query = await this.GetQuery();
             this.ddl.Text = this.Query;
             string caption = "Advertence";
@@ -99,6 +108,34 @@ namespace SQLITE.Views
                 DialogResult = DialogResult.OK;
                 this.Close();
             }
+        }
+
+        private bool GetNewColumns()
+        {
+            if (this.dataGridView1.RowCount-1 > this.tableModel.Columns.Count)
+            {
+                for (int i = this.tableModel.Columns.Count; i < dataGridView1.RowCount-1; i++)
+                {
+                    var columName = this.dataGridView1.Rows[i].Cells[ColumName.Name].Value?.ToString();
+                    var columType = this.dataGridView1.Rows[i].Cells[NewType.Name].Value?.ToString();
+                    var columPk = Convert.ToBoolean(this.dataGridView1.Rows[i].Cells[PrimaryKey.Name].Value);
+                    var columIsNull = Convert.ToBoolean(this.dataGridView1.Rows[i].Cells[IsNull.Name].Value);
+                    var columdefaultValue = this.dataGridView1.Rows[i].Cells[DefaultValue.Name].Value?.ToString();
+                    if (!String.IsNullOrEmpty(columName) && !String.IsNullOrEmpty(columType))
+                    {
+                        var columnModel = new ColumnModel
+                        {
+                            ColumnName = columName,
+                            DateType = columType,
+                            DefaultValue = columdefaultValue,
+                            IsNull = columIsNull,
+                            IsPrimaryKey = columPk
+                        };
+                        this.ColumnAdds.Add(columnModel);
+                    }
+                }
+            }
+            return true;
         }
 
         private async Task<string> GetQuery()
