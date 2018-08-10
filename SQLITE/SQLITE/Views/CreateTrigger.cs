@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SQLITE.Models;
+using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SQLITE.Views
@@ -9,29 +11,37 @@ namespace SQLITE.Views
 
         string query, lastSql;
         bool isNew;
+        DatabaseModel databaseModel;
 
-        public CreateTrigger(bool isNew, string lastSql)
+
+        public CreateTrigger(bool isNew, string lastSql,DatabaseModel databaseModel)
         {
             InitializeComponent();
-            this.query = @" CREATE TRIGGER[IF NOT EXISTS] trigger_name \n"+
-                "[BEFORE | AFTER | INSTEAD OF][INSERT | UPDATE | DELETE] \n"+
-                "ON table_name \n"+
-                "[WHEN condition] \n"+
-                "BEGIN \n"+
-                "statements; \n"+
+            this.databaseModel = databaseModel;
+            this.query = @" CREATE TRIGGER[IF NOT EXISTS] trigger_name \n" +
+                "[BEFORE | AFTER | INSTEAD OF][INSERT | UPDATE | DELETE] \n" +
+                "ON table_name \n" +
+                "[WHEN condition] \n" +
+                "BEGIN \n" +
+                "statements; \n" +
                 "END; \n";
             this.isNew = isNew;
-            this.lastSql = lastSql;
-            this.LoadBasicSql();
+            this.lastSql = @"BEGIN
+                            statements
+                            END";
+            this.LoadBasicSqlAndComboBox();
         }
 
 
-        private async void LoadBasicSql()
+        private async void LoadBasicSqlAndComboBox()
         {
             if (this.isNew)
             {
                 this.ddl.Text = this.lastSql;
                 this.button1.Text = "Edit";
+                this.comboTable.Items.AddRange(this.databaseModel.Tables.Select(x => x.TableName).ToArray());
+                this.comboAction.Items.AddRange((string[])Enum.GetNames(typeof(TriggerType)));
+                this.combWhen.Items.AddRange((string[])Enum.GetNames(typeof(TriggerWhen)));
             }
             else
             {
@@ -39,9 +49,24 @@ namespace SQLITE.Views
             }
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Sql = this.ddl.Text;
+            var query = $"CREATE TRIGGER IF NOT EXISTS {this.triggerName.Text}" +
+                $" {this.comboAction.Text}" +
+                $" {this.combWhen.Text}" +
+                $" ON {this.comboTable.Text}" +
+                $" WHEN {this.texboxCondition.Text}" +
+                $" BEGIN \n" +
+                $" {this.ddl.Text}; \n" +
+                $" END;";
+            this.Sql = query;
+            this.ddl.Text = query;
+
             if (this.Sql.Length < 12)
             {
                 return;

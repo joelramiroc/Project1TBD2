@@ -218,5 +218,10 @@ namespace SQLITE.Controller
             return await this.db.ExecuteQuery(query);
         }
 
+        public async Task<SQLiteConnection> GetSQliteConecction()
+        {
+            return this.db.SQLiteConnection;
+        }
+
     }
 }

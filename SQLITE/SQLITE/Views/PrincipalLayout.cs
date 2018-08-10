@@ -89,7 +89,7 @@ namespace SQLITE
                     this.menuMenus.Tag = node;
                     this.menuMenus.Show(Cursor.Position);
                 }
-                else if (nodeInfo.Type == NodeType.Table || nodeInfo.Type == NodeType.View || nodeInfo.Type == NodeType.Trigger)
+                else if (nodeInfo.Type == NodeType.Table || nodeInfo.Type == NodeType.View || nodeInfo.Type == NodeType.Trigger || nodeInfo.Type == NodeType.Index)
                 {
                     this.menuElements.Tag = node;
                     this.menuElements.Show(Cursor.Position);
@@ -175,7 +175,7 @@ namespace SQLITE
             }
             catch (Exception ea)
             {
-                MessageBox.Show("Error in command");
+                MessageBox.Show("Error in command:" + ea.Message);
 
             }
         }
@@ -233,7 +233,7 @@ namespace SQLITE
                 {
                     return;
                 }
-                this.AlterTable = new AlterTable(table);
+                this.AlterTable = new AlterTable(table,await this.controller.GetSQliteConecction());
                 if (this.AlterTable.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -252,9 +252,9 @@ namespace SQLITE
                             MessageBox.Show("Not was edited the table");
                         }
                     }
-                    catch (Exception)
+                    catch (Exception exc)
                     {
-                        MessageBox.Show("Internal error");
+                        MessageBox.Show("Internal error:" + exc.Message);
                     }
 
                 }
@@ -309,7 +309,7 @@ namespace SQLITE
 
                 }
 
-                this.CreateTrigger = new CreateTrigger(false, c);
+                this.CreateTrigger = new CreateTrigger(false, c, this.controller.datab);
                 if (this.CreateTrigger.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -406,6 +406,48 @@ namespace SQLITE
                             }
                         }
                     }
+                    else if (nodeInfo.Type == NodeType.Index)
+                    {
+                        MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                        string caption = "Advertence";
+                        DialogResult result;
+                        result = MessageBox.Show("Are you sure", caption, buttons);
+                        if (result == DialogResult.Yes)
+                        {
+                            string query = $"drop index {node.Text}";
+                            var resultd = await this.controller.ExecuteConsult(query);
+                            if (resultd == 0)
+                            {
+                                node.Remove();
+                                MessageBox.Show("The index was drop succefully");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Any internal error.");
+                            }
+                        }
+                    }
+                    else if (nodeInfo.Type == NodeType.Trigger)
+                    {
+                        MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                        string caption = "Advertence";
+                        DialogResult result;
+                        result = MessageBox.Show("Are you sure", caption, buttons);
+                        if (result == DialogResult.Yes)
+                        {
+                            string query = $"drop trigger {node.Text}";
+                            var resultd = await this.controller.ExecuteConsult(query);
+                            if (resultd == 0)
+                            {
+                                node.Remove();
+                                MessageBox.Show("The trigger was drop succefully");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Any internal error.");
+                            }
+                        }
+                    }
                     else
                     {
                         MessageBox.Show("Anny internal error");
@@ -455,10 +497,10 @@ namespace SQLITE
                             MessageBox.Show("Not was create the table");
                         }
                     }
-                    catch (Exception)
+                    catch (Exception exc)
                     {
 
-                        MessageBox.Show("Internal error");
+                        MessageBox.Show("Internal error:" + exc.Message);
                     }
                 }
             }
@@ -492,7 +534,7 @@ namespace SQLITE
             }
             else if (node.Text.Equals("TRIGGERS"))
             {
-                this.CreateTrigger = new CreateTrigger(true, string.Empty);
+                this.CreateTrigger = new CreateTrigger(true, string.Empty,this.controller.datab);
                 if (this.CreateTrigger.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -511,9 +553,9 @@ namespace SQLITE
                             MessageBox.Show("Not was create the trigger");
                         }
                     }
-                    catch (Exception)
+                    catch (Exception exc)
                     {
-                        MessageBox.Show("Internal error");
+                        MessageBox.Show("Internal error:" + exc.Message);
                     }
                 }
             }

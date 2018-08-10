@@ -3,3 +3,10 @@
     BEFORE,
     AFTER
 }
+
+public enum TriggerWhen
+{
+    INSERT,
+    UPDATE,
+    DELETE
+}
