@@ -82,7 +82,6 @@ namespace SQLITE.Views
             DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
             var column = new ColumnModel
             {
-                Cid = Convert.ToInt32(row.Cells["Cid"].Value),
                 ColumnName = row.Cells["ColumName"].Value.ToString(),
                 DateType = row.Cells["ColumType"].Value.ToString(),
                 DefaultValue = row.Cells["DefaultValue"].Value.ToString(),
@@ -137,11 +136,13 @@ namespace SQLITE.Views
         {
             this.GetNewColumns();
             this.Query = "";
-            if (!this.tableModel.TableName.Equals(this.newTableName))
+            if (!this.tableModel.TableName.Equals(this.newTableName.Text) && String.IsNullOrEmpty(this.newTableName.Text))
             {
                 this.Query = (await this.AlterNameTable()) + " \n "; ;
             }
             this.Query = (await this.AlterColumn()) + " \n ";
+            this.Query += (await this.AlterColumnDeleted()) + " \n ";
+            this.Query += (await this.AlterColumnAdd()) + " \n ";
 
             this.ddl.Text = this.Query;
             string caption = "Advertence";
@@ -208,7 +209,7 @@ namespace SQLITE.Views
             await this.GetColumnFinallyEdited();
             for (int i = 0; i < this.columFinallyEdites.Count; i++)
             {
-                if (i != this.columFinallyEdites.Count - 1 && i != 0)
+                if (i != 0)
                 {
                     miniQuery += ", ";
                 }
@@ -246,7 +247,7 @@ namespace SQLITE.Views
             await GetColumnFinnally();
             for (int i = 0; i < this.ColumnFinally.Count; i++)
             {
-                if (i != this.ColumnFinally.Count - 1 && i != 0)
+                if (i != 0)
                 {
                     miniQuery += ", ";
                 }
@@ -280,7 +281,7 @@ namespace SQLITE.Views
                 }
                 else
                 {
-                    if (i != this.ColumnAdds.Count -1 && i != 0)
+                    if (i != 0)
                     {
                         miniQuery += ", ";
                     }
