@@ -40,29 +40,49 @@ namespace SQLITE.Views
             this.columFinallyEdites = new List<ColumnModel>();
             this.Querys = new List<string>();
             this.dataGridView1.RowsAdded += DataGridView1_RowsAdded;
-            this.dataGridView1.RowsRemoved += DataGridView1_RowsRemoved;
+            //this.dataGridView1.RowsRemoved += DataGridView1_RowsRemoved;
+            this.dataGridView1.UserDeletedRow += DataGridView1_UserDeletedRow;
             this.dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
             this.SqlErrors = "";
         }
 
+        private void DataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            DataGridViewRow row = e.Row;
+            var column = new ColumnModel();
+
+            column.ColumnName = row.Cells[1].Value.ToString();
+            column.IsNull = Convert.ToBoolean(row.Cells[3].Value);
+            column.DefaultValue = row.Cells[4].Value.ToString();
+            column.DateType = row.Cells[2].Value.ToString();
+            column.IsPrimaryKey = Convert.ToBoolean(row.Cells[5].Value);
+
+
+
+            if (this.tableModel.Columns.Exists(x => x.ColumnName == column.ColumnName))
+            {
+                this.ColumnDeletes.Add(column);
+            }
+        }
 
         private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
 
             var columName = this.dataGridView1.Rows[e.RowIndex].Cells[ColumName.Name].Value?.ToString();
-            var columType = this.dataGridView1.Rows[e.RowIndex].Cells[NewType.Name].Value?.ToString();
+            var columType = this.dataGridView1.Rows[e.RowIndex].Cells[ColumType.Name].Value?.ToString();
+            var ncolumType = this.dataGridView1.Rows[e.RowIndex].Cells[NewType.Name].Value?.ToString();
             var columPk = Convert.ToBoolean(this.dataGridView1.Rows[e.RowIndex].Cells[PrimaryKey.Name].Value);
             var columIsNull = Convert.ToBoolean(this.dataGridView1.Rows[e.RowIndex].Cells[IsNull.Name].Value);
             var columdefaultValue = this.dataGridView1.Rows[e.RowIndex].Cells[DefaultValue.Name].Value?.ToString();
             var valueasd = (this.dataGridView1.Rows[e.RowIndex].Cells[Cid.Name].Value);
-            int? columCid = (this.dataGridView1.Rows[e.RowIndex].Cells[Cid.Name].Value)  == null ? -1 : Convert.ToInt32(this.dataGridView1.Rows[e.RowIndex].Cells[Cid.Name].Value);
+            int? columCid = (this.dataGridView1.Rows[e.RowIndex].Cells[Cid.Name].Value) == null ? -1 : Convert.ToInt32(this.dataGridView1.Rows[e.RowIndex].Cells[Cid.Name].Value);
 
             if (columCid == -1)
             {
                 return;
             }
 
-            if (!String.IsNullOrEmpty(columName) && !String.IsNullOrEmpty(columType))
+            if (!String.IsNullOrEmpty(columName))
             {
                 var columnModel = new ColumnModel
                 {
@@ -73,27 +93,32 @@ namespace SQLITE.Views
                     IsPrimaryKey = columPk,
                     Cid = columCid
                 };
+
+                if (!String.IsNullOrEmpty(ncolumType))
+                {
+                    columnModel.DateType = ncolumType;
+                }
                 this.columEdites.Add(columnModel);
             }
         }
 
-        private void DataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
-        {
-            DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-            var column = new ColumnModel
-            {
-                ColumnName = row.Cells["ColumName"].Value.ToString(),
-                DateType = row.Cells["ColumType"].Value.ToString(),
-                DefaultValue = row.Cells["DefaultValue"].Value.ToString(),
-                IsNull = Convert.ToBoolean(row.Cells["IsNull"].Value),
-                IsPrimaryKey = Convert.ToBoolean(row.Cells["PrimaryKey"].Value)
-            };
+        //private void DataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        //{
+        //    DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+        //    var column = new ColumnModel
+        //    {
+        //        ColumnName = row.Cells["ColumName"].Value.ToString(),
+        //        DateType = row.Cells["ColumType"].Value.ToString(),
+        //        DefaultValue = row.Cells["DefaultValue"].Value.ToString(),
+        //        IsNull = Convert.ToBoolean(row.Cells["IsNull"].Value),
+        //        IsPrimaryKey = Convert.ToBoolean(row.Cells["PrimaryKey"].Value)
+        //    };
 
-            if (this.tableModel.Columns.Exists(x => x.Cid == column.Cid))
-            {
-                this.ColumnDeletes.Add(column);
-            }
-        }
+        //    if (this.tableModel.Columns.Exists(x => x.ColumnName == column.ColumnName))
+        //    {
+        //        this.ColumnDeletes.Add(column);
+        //    }
+        //}
 
         private void DataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
@@ -136,13 +161,24 @@ namespace SQLITE.Views
         {
             this.GetNewColumns();
             this.Query = "";
-            if (!this.tableModel.TableName.Equals(this.newTableName.Text) && String.IsNullOrEmpty(this.newTableName.Text))
+            if (!String.IsNullOrEmpty(this.newTableName.Text) && !this.tableModel.TableName.Equals(this.newTableName.Text))
             {
                 this.Query = (await this.AlterNameTable()) + " \n "; ;
             }
-            this.Query = (await this.AlterColumn()) + " \n ";
-            this.Query += (await this.AlterColumnDeleted()) + " \n ";
-            this.Query += (await this.AlterColumnAdd()) + " \n ";
+            await GetColumnFinnally();
+            if (this.columEdites.Count != 0)
+            {
+                this.Query = (await this.AlterColumn()) + " \n ";
+                this.tableModel.Columns = this.columFinallyEdites;
+            }
+            if (this.ColumnDeletes.Count != 0)
+            {
+                this.Query += (await this.AlterColumnDeleted()) + " \n ";
+            }
+            if (this.ColumnAdds.Count != 0)
+            {
+                this.Query += (await this.AlterColumnAdd()) + " \n ";
+            }
 
             this.ddl.Text = this.Query;
             string caption = "Advertence";
@@ -158,9 +194,9 @@ namespace SQLITE.Views
 
         private bool GetNewColumns()
         {
-            if (this.dataGridView1.RowCount-1 > this.tableModel.Columns.Count)
+            if (this.dataGridView1.RowCount - 1 > this.tableModel.Columns.Count)
             {
-                for (int i = this.tableModel.Columns.Count; i < dataGridView1.RowCount-1; i++)
+                for (int i = this.tableModel.Columns.Count; i < dataGridView1.RowCount - 1; i++)
                 {
                     var columName = this.dataGridView1.Rows[i].Cells[ColumName.Name].Value?.ToString();
                     var columType = this.dataGridView1.Rows[i].Cells[NewType.Name].Value?.ToString();
@@ -201,30 +237,50 @@ namespace SQLITE.Views
             var miniQ = "";
             var miniQuery = "PRAGMA foreign_keys=off";
             miniQuery = $"ALTER TABLE {this.tableModel.TableName} RENAME TO {this.tableModel.TableName}_old";
-            return miniQ;
             miniQ += miniQuery + " \n ";
             await this.ExecuteCommand(miniQuery);
             miniQuery = $"CREATE TABLE {this.tableModel.TableName}( ";
             miniQ += miniQuery + " \n ";
             await this.GetColumnFinallyEdited();
+            var keys = new List<string>();
+            bool haveKeys = false;
             for (int i = 0; i < this.columFinallyEdites.Count; i++)
             {
                 if (i != 0)
                 {
                     miniQuery += ", ";
                 }
+                if (columFinallyEdites[i].IsPrimaryKey != null && columFinallyEdites[i].IsPrimaryKey.Value)
+                {
+                    haveKeys = true;
+                    keys.Add(columFinallyEdites[i].ColumnName);
+                }
                 miniQuery += $"{await this.GetColumnQuery(columFinallyEdites[i])}";
+            }
+            if (haveKeys)
+            {
+                miniQuery += ", PRIMARY KEY(";
+                for (int i = 0; i < keys.Count; i++)
+                {
+                    if (i != 0)
+                    {
+                        miniQuery += ",";
+                    }
+
+                    miniQuery += $" {keys[i]}";
+                }
+                miniQuery += ")";
             }
             miniQuery += ")";
             miniQ += miniQuery + " \n ";
             await this.ExecuteCommand(miniQuery);
             var listCam = await this.GetListColumnsE();
-            miniQuery += $"INSERT INTO {this.tableModel.TableName} (" +
+            miniQuery = $"INSERT INTO {this.tableModel.TableName}" +
                 $"({listCam})" +
                 $" select {listCam} from {this.tableModel.TableName}_old";
             await this.ExecuteCommand(miniQuery);
             miniQ += miniQuery + " \n ";
-            miniQuery += $"DROP TABLE {this.tableModel.TableName}_old";
+            miniQuery = $"DROP TABLE {this.tableModel.TableName}_old";
             await this.ExecuteCommand(miniQuery);
             miniQ += miniQuery + " \n ";
             //COMMIT;
@@ -236,33 +292,51 @@ namespace SQLITE.Views
         {
             var miniQ = "";
             var miniQuery = "PRAGMA foreign_keys=off";
-            //await this.ExecuteCommand(miniQuery);
-            //miniQuery = "BEGIN TRANSACTION";
-            //await this.ExecuteCommand(miniQuery);
+            await this.GetColumnFinnally();
             miniQuery = $"ALTER TABLE {this.tableModel.TableName} RENAME TO {this.tableModel.TableName}_old";
             miniQ += miniQuery + " \n ";
             await this.ExecuteCommand(miniQuery);
             miniQuery = $"CREATE TABLE {this.tableModel.TableName}( ";
             miniQ += miniQuery + " \n ";
-            await GetColumnFinnally();
+            var keys = new List<string>();
+            bool haveKeys = false;
             for (int i = 0; i < this.ColumnFinally.Count; i++)
             {
                 if (i != 0)
                 {
                     miniQuery += ", ";
                 }
+                if (ColumnFinally[i].IsPrimaryKey != null && ColumnFinally[i].IsPrimaryKey.Value)
+                {
+                    haveKeys = true;
+                    keys.Add(ColumnFinally[i].ColumnName);
+                }
                 miniQuery += $"{await this.GetColumnQuery(ColumnFinally[i])}";
+            }
+            if (haveKeys)
+            {
+                miniQuery += ", PRIMARY KEY(";
+                for (int i = 0; i < keys.Count; i++)
+                {
+                    if (i != 0)
+                    {
+                        miniQuery += ",";
+                    }
+
+                    miniQuery += $" {keys[i]}";
+                }
+                miniQuery += ")";
             }
             miniQuery += ")";
             miniQ += miniQuery + " \n ";
             await this.ExecuteCommand(miniQuery);
             var listCam = await this.GetListColumns();
-            miniQuery += $"INSERT INTO {this.tableModel.TableName} (" +
-                $"({listCam})" +
+            miniQuery = $"INSERT INTO {this.tableModel.TableName} (" +
+                $"{listCam})" +
                 $" select {listCam} from {this.tableModel.TableName}_old";
             await this.ExecuteCommand(miniQuery);
             miniQ += miniQuery + " \n ";
-            miniQuery += $"DROP TABLE {this.tableModel.TableName}_old";
+            miniQuery = $"DROP TABLE {this.tableModel.TableName}_old";
             await this.ExecuteCommand(miniQuery);
             miniQ += miniQuery + " \n ";
             //COMMIT;
@@ -285,7 +359,7 @@ namespace SQLITE.Views
                     {
                         miniQuery += ", ";
                     }
-                        miniQuery += $"{await this.GetColumnQuery(ColumnAdds[i])}";
+                    miniQuery += $"{await this.GetColumnQuery(ColumnAdds[i])}";
                 }
             }
             this.Querys.Add(miniQuery);
@@ -296,9 +370,13 @@ namespace SQLITE.Views
         private async Task<string> GetColumnQuery(ColumnModel model)
         {
             var miniQuery = $"{model.ColumnName} {model.DateType}";
-            if (model.IsPrimaryKey != null)
+            if (model.IsPrimaryKey != null && model.IsPrimaryKey.Value)
             {
-                miniQuery += " PRIMARY KEY";
+                //var keys = new List<string>();
+                //bool haveKeys = false;
+                //haveKeys = true;
+                //miniQuery += " PRIMARY KEY";
+                //keys.Add(model.ColumnName);
             }
             else
             {
@@ -324,7 +402,7 @@ namespace SQLITE.Views
             string list = "";
             for (int i = 0; i < this.ColumnFinally.Count; i++)
             {
-                if (i != 0 && i != this.ColumnFinally.Count - 1)
+                if (i != 0)
                 {
                     list += ", ";
                 }
@@ -338,7 +416,7 @@ namespace SQLITE.Views
             string list = "";
             for (int i = 0; i < this.columFinallyEdites.Count; i++)
             {
-                if (i != 0 && i != this.columFinallyEdites.Count - 1)
+                if (i != 0)
                 {
                     list += ", ";
                 }
@@ -349,6 +427,7 @@ namespace SQLITE.Views
 
         private async Task<bool> GetColumnFinnally()
         {
+            this.ColumnFinally = new List<ColumnModel>();
             foreach (var item in this.tableModel.Columns)
             {
                 if (this.ColumnDeletes.Find(x => x.ColumnName.Equals(item.ColumnName)) == null)
@@ -372,7 +451,7 @@ namespace SQLITE.Views
 
             foreach (var item in this.ColumnFinally)
             {
-                if (this.columEdites.Find(x => x.ColumnName.Equals(item.ColumnName)) != null)
+                if (this.columEdites.Find(x => x.ColumnName.Equals(item.ColumnName)) == null)
                 {
                     this.columFinallyEdites.Add(item);
                 }
@@ -385,11 +464,12 @@ namespace SQLITE.Views
             try
             {
                 SQLiteCommand sQLiteCommand = new SQLiteCommand(query, this.SQLiteConnection);
-                sQLiteCommand.ExecuteNonQuery();
+                var result = sQLiteCommand.ExecuteNonQuery();
             }
             catch (Exception exs)
             {
                 this.SqlErrors += exs.Message + " \n";
+                return false;
             }
             return true;
         }
