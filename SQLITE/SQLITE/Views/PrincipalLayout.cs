@@ -175,7 +175,15 @@ namespace SQLITE
             }
             catch (Exception ea)
             {
-                MessageBox.Show("Error in command:" + ea.Message);
+                try
+                {
+                    var result = await this.controller.ExecuteConsult("QUERY");
+                    this.manualQuerys.Text += result.ToString();
+                }
+                catch (Exception ss)
+                {
+                    MessageBox.Show("Error in command:" + ss.Message);
+                }
 
             }
         }
@@ -610,7 +618,8 @@ namespace SQLITE
                 {
                     string query = $"select * from {node.Text}";
                     var dataSet = await this.controller.DataSet(query, node.Text);
-                    this.RegisterOfTableView = new RegisterOfTableView(node.Text, dataSet);
+                    var table = this.controller.datab.Tables.Find(x => x.TableName.Equals(node.Text));
+                    this.RegisterOfTableView = new RegisterOfTableView(node.Text, dataSet,table, await this.controller.GetSQliteConecction());
                     if (this.RegisterOfTableView.ShowDialog() == DialogResult.OK)
                     {
                         MessageBox.Show("Cool");

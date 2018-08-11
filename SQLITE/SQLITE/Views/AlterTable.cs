@@ -40,7 +40,6 @@ namespace SQLITE.Views
             this.columFinallyEdites = new List<ColumnModel>();
             this.Querys = new List<string>();
             this.dataGridView1.RowsAdded += DataGridView1_RowsAdded;
-            //this.dataGridView1.RowsRemoved += DataGridView1_RowsRemoved;
             this.dataGridView1.UserDeletedRow += DataGridView1_UserDeletedRow;
             this.dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
             this.SqlErrors = "";
@@ -50,7 +49,6 @@ namespace SQLITE.Views
         {
             DataGridViewRow row = e.Row;
             var column = new ColumnModel();
-
             column.ColumnName = row.Cells[1].Value.ToString();
             column.IsNull = Convert.ToBoolean(row.Cells[3].Value);
             column.DefaultValue = row.Cells[4].Value.ToString();

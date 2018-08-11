@@ -1,85 +1,171 @@
-﻿using System.Data;
+﻿using SQLITE.Models;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SQLite;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SQLITE.Views
 {
     public partial class RegisterOfTableView : Form
     {
-        public string TableName { get; set; }
-
-        public DataSet DataSet { get; set; }
-
         bool isCharging;
+        SQLiteConnection SQLiteConnection;
+        public string TableName { get; set; }
+        public string SqlErrors { get; set; }
+        public DataSet DataSet { get; set; }
+        int rowS;
 
-        public RegisterOfTableView(string tableName, DataSet dataSet)
+        TableModel model;
+
+        List<ColumnModel> columKeys;
+
+        public RegisterOfTableView(string tableName, DataSet dataSet, TableModel model, SQLiteConnection SQLiteConnection)
         {
             InitializeComponent();
             this.TableName = tableName;
+            this.SQLiteConnection = SQLiteConnection;
+            this.SqlErrors = "";
             this.DataSet = dataSet;
             this.isCharging = true;
+            this.columKeys = new List<ColumnModel>();
+            this.model = model;
             this.LoadData();
-            this.dataGridView1.RowsAdded += DataGridView1_RowsAdded;
-            this.dataGridView1.RowErrorTextChanged += DataGridView1_RowErrorTextChanged;
-            this.dataGridView1.RowErrorTextNeeded += DataGridView1_RowErrorTextNeeded;
-            this.dataGridView1.RowsRemoved += DataGridView1_RowsRemoved;
-            this.dataGridView1.CurrentCellChanged += DataGridView1_CurrentCellChanged;
+            this.dataGridView1.CellValueChanged += DataGridView1_CellValueChanged;
+            this.dataGridView1.CellClick += DataGridView1_CellClick;
+            this.dataGridView1.UserDeletingRow += DataGridView1_UserDeletingRow;
+            this.rowS = -1;
         }
 
-        private void DataGridView1_CurrentCellChanged(object sender, System.EventArgs e)
+        private async void DataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            try
+            var miniq = $"delete from {model.TableName} Where";
+            var count = e.Row.Cells.Count;
+            var t = dataGridView1.Rows[this.rowS];
+            var list = new List<string>();
+            for (int i = 0; i < model.Columns.Count; i++)
             {
-
-                if (this.isCharging)
+                if (model.Columns[i].IsPrimaryKey.Value)
                 {
-                    return;
+                    list.Add(model.Columns[i].ColumnName);
                 }
-                string myString = "CurrentCellChanged event raised, cell focus is at ";
-                string myPoint = dataGridView1.CurrentCell.ColumnIndex + "," +
-                               dataGridView1.CurrentCell.RowIndex;
-                myString = myString + "(" + myPoint + ")";
-                var strinsg = dataGridView1.Columns[dataGridView1.CurrentCell.ColumnIndex].Name;
-                MessageBox.Show(myString, "Current cell co-ordinates");
+            }
+            if (list.Count != 0)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (i != 0 && i != list.Count - 1)
+                    {
+                        miniq += " and";
+                    }
+                    miniq += $" { list[i]} = { t.Cells[list[i]].Value}";
+                }
 
             }
-            catch (System.Exception)
+            else
             {
+                var li = new List<string>();
+
+                for (int i = 0; i < model.Columns.Count; i++)
+                {
+                    li.Add(model.Columns[i].ColumnName);
+
+                }
+                for (int i = 0; i < li.Count; i++)
+                {
+                    if (i != 0)
+                    {
+                        miniq += " and";
+                    }
+
+                    try
+                    {
+                        miniq += $@" { li[i]} = '{ t.Cells[li[i]].Value}'";
+                    }
+                    catch (Exception)
+                    {
+                        miniq += $@" { li[i]} = '{ t.Cells[li[i]].Value}'";
+                    }
+                }
             }
+            var result = await this.ExecuteCommand(miniq);
         }
 
-        private void DataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (this.isCharging)
-            {
-                return;
-            }
-            try
-            {
-                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-                var element = row.Cells[0].Value;
-            }
-            catch (System.Exception)
-            {
-            }
+            this.rowS = e.RowIndex;
         }
 
-        private void DataGridView1_RowErrorTextNeeded(object sender, DataGridViewRowErrorTextNeededEventArgs e)
+
+
+
+
+
+        private async void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (this.isCharging)
+            var miniq = $"UPDATE {model.TableName} set {this.dataGridView1.Columns[e.ColumnIndex].Name} = '{this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value}' WHERE";
+            var t = dataGridView1.Rows[e.RowIndex];
+            var list = new List<string>();
+            for (int i = 0; i < model.Columns.Count; i++)
             {
-                return;
+                if (model.Columns[i].IsPrimaryKey.Value)
+                {
+                    list.Add(model.Columns[i].ColumnName);
+                }
             }
-            DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+            if (list.Count != 0)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (i != 0 && i != list.Count - 1)
+                    {
+                        miniq += " and";
+                    }
+                    miniq += $" { list[i]} = { t.Cells[list[i]].Value}";
+                }
+
+            }
+            else
+            {
+                var li = new List<string>();
+
+                for (int i = 0; i < model.Columns.Count; i++)
+                {
+                    li.Add(model.Columns[i].ColumnName);
+
+                }
+                for (int i = 0; i < li.Count; i++)
+                {
+                    if (i != e.ColumnIndex)
+                    {
+
+
+                        if (i != 0)
+                        {
+                            miniq += " and";
+                        }
+
+                        try
+                        {
+                            miniq += $@" { li[i]} = '{ t.Cells[li[i]].Value}'";
+                        }
+                        catch (Exception)
+                        {
+                            miniq += $@" { li[i]} = '{ t.Cells[li[i]].Value}'";
+                        }
+                    }
+                }
+            }
+            var result = await this.ExecuteCommand(miniq);
         }
 
-        private void DataGridView1_RowErrorTextChanged(object sender, DataGridViewRowEventArgs e)
-        {
-            if (this.isCharging)
-            {
-                return;
-            }
-            DataGridViewRow row = e.Row;
-        }
+
+
+
+
+
 
         private void DataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
@@ -92,6 +178,8 @@ namespace SQLITE.Views
 
         public void LoadData()
         {
+            this.columKeys.AddRange(this.model.Columns.Where(x => x.IsPrimaryKey == true));
+            this.dataGridView1.RowsAdded -= new DataGridViewRowsAddedEventHandler(DataGridView1_RowsAdded);
             this.dataGridView1.DataSource = this.DataSet.Tables[0];
             this.isCharging = false;
         }
@@ -119,6 +207,42 @@ namespace SQLITE.Views
             {
                 return;
             }
+        }
+
+        private void initiar_Click(object sender, EventArgs e)
+        {
+            this.dataGridView1.RowsAdded += new DataGridViewRowsAddedEventHandler(DataGridView1_RowsAdded);
+        }
+
+        private async Task<bool> ExecuteCommand(string query)
+        {
+            try
+            {
+                SQLiteCommand sQLiteCommand = new SQLiteCommand(query, this.SQLiteConnection);
+                var result = sQLiteCommand.ExecuteNonQuery();
+            }
+            catch (Exception exs)
+            {
+                this.SqlErrors += exs.Message + " \n";
+                return false;
+            }
+            return true;
+        }
+
+        private async void button2_Click(object sender, EventArgs e)
+        {
+            var miniq = $"INSERT INTO {model.TableName} VALUES(";
+            DataGridViewRow row = dataGridView1.Rows[this.dataGridView1.RowCount - 2];
+            for (int i = 0; i < this.dataGridView1.ColumnCount; i++)
+            {
+                if (i != 0)
+                {
+                    miniq += ",";
+                }
+                miniq += $@" '{row.Cells[i].Value}'";
+            }
+            miniq += ")";
+            var result = await this.ExecuteCommand(miniq);
         }
     }
 }

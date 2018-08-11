@@ -165,8 +165,16 @@ namespace SQLite.Services
 
         public async Task<int> ExecuteQuery(string query)
         {
-            SQLiteCommand sQLiteCommand = new SQLiteCommand(query, this.SQLiteConnection);
-            return sQLiteCommand.ExecuteNonQuery();
+            try
+            {
+                SQLiteCommand sQLiteCommand = new SQLiteCommand(query, this.SQLiteConnection);
+                return sQLiteCommand.ExecuteNonQuery();
+            }
+            catch (Exception s)
+            {
+                var ss = s.Message;
+                return 1;
+            }
         }
 
         public async Task<bool> OpenDataBase(string path)

@@ -30,6 +30,8 @@
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
+            this.initiar = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,11 +56,33 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // initiar
+            // 
+            this.initiar.Location = new System.Drawing.Point(63, 23);
+            this.initiar.Name = "initiar";
+            this.initiar.Size = new System.Drawing.Size(75, 23);
+            this.initiar.TabIndex = 2;
+            this.initiar.Text = "Iniciar";
+            this.initiar.UseVisualStyleBackColor = true;
+            this.initiar.Click += new System.EventHandler(this.initiar_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(630, 23);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "Add";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // RegisterOfTableView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.initiar);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridView1);
             this.Name = "RegisterOfTableView";
@@ -72,5 +96,7 @@
 
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button initiar;
+        private System.Windows.Forms.Button button2;
     }
 }
