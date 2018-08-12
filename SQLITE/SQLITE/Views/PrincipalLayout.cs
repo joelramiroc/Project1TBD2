@@ -23,6 +23,7 @@ namespace SQLITE
         AlterTable AlterTable;
         CreateDatabase createDatabase;
         AlterTrigger AlterTrigger;
+        CreateForeignKey CreateForeignKey;
         public PrincipalLayout()
         {
             InitializeComponent();
@@ -555,7 +556,12 @@ namespace SQLITE
             }
             else if (node.Text.Equals("INDEXS"))
             {
-                this.CreateIndex = new CreateIndex(true, "", this.controller.datab);
+                var nodeP = node.Parent;
+                if (nodeP == null)
+                {
+                    return;
+                }
+                this.CreateIndex = new CreateIndex(true, "", this.controller.datab,nodeP.Text);
                 if (this.CreateIndex.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -638,6 +644,31 @@ namespace SQLITE
                 {
                     MessageBox.Show("Cant create the database");
                 }
+            }
+        }
+
+        private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+        private async void addForeignKeyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            var node = this.treeViewDataConecction.SelectedNode;
+            if (node == null)
+            {
+                return;
+            }
+            var nodeInfo = (NodeInfo)node.Tag;
+            if (nodeInfo == null)
+            {
+                return;
+            }
+            if (nodeInfo.Type == NodeType.Table)
+            {
+                this.CreateForeignKey = new CreateForeignKey(this.controller.datab,node.Text, await this.controller.GetSQliteConecction());
+                this.CreateForeignKey.ShowDialog();
             }
         }
     }

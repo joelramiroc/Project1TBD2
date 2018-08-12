@@ -14,6 +14,8 @@ namespace SQLITE.Models
 
         public List<TriggerModel> Triggers { get; set; }
 
+        public List<CheckModel> Checks { get; set; }
+
         public string DataBaseName { get; set; }
     }
 }

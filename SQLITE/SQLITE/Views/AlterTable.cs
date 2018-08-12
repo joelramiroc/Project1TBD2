@@ -100,24 +100,6 @@ namespace SQLITE.Views
             }
         }
 
-        //private void DataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
-        //{
-        //    DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-        //    var column = new ColumnModel
-        //    {
-        //        ColumnName = row.Cells["ColumName"].Value.ToString(),
-        //        DateType = row.Cells["ColumType"].Value.ToString(),
-        //        DefaultValue = row.Cells["DefaultValue"].Value.ToString(),
-        //        IsNull = Convert.ToBoolean(row.Cells["IsNull"].Value),
-        //        IsPrimaryKey = Convert.ToBoolean(row.Cells["PrimaryKey"].Value)
-        //    };
-
-        //    if (this.tableModel.Columns.Exists(x => x.ColumnName == column.ColumnName))
-        //    {
-        //        this.ColumnDeletes.Add(column);
-        //    }
-        //}
-
         private void DataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             this.AddComboBox();
@@ -370,11 +352,6 @@ namespace SQLITE.Views
             var miniQuery = $"{model.ColumnName} {model.DateType}";
             if (model.IsPrimaryKey != null && model.IsPrimaryKey.Value)
             {
-                //var keys = new List<string>();
-                //bool haveKeys = false;
-                //haveKeys = true;
-                //miniQuery += " PRIMARY KEY";
-                //keys.Add(model.ColumnName);
             }
             else
             {

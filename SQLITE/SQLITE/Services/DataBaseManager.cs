@@ -125,6 +125,24 @@ namespace SQLite.Services
             return views;
         }
 
+        public async Task<List<CheckModel>> GetChecksDataBase()
+        {
+            var hecks = new List<CheckModel>();
+            string query = @"PRAGMA foreign_key_check";
+            SQLiteCommand sQLiteCommand3 = new SQLiteCommand(query, this.SQLiteConnection);
+            var result = sQLiteCommand3.ExecuteReader();
+            while (result.Read())
+            {
+                hecks.Add(new CheckModel
+                {
+                    Id = 0,
+                    CheckName = result["name"].ToString()
+                });
+            }
+
+            return hecks;
+        }
+
         public async Task<List<TriggerModel>> GetTriggersDataBase()
         {
             var triggers = new List<TriggerModel>();

@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\PrincipalLayoutController.cs" />
+    <Compile Include="Models\CheckModel.cs" />
     <Compile Include="Models\IndexModel.cs" />
     <Compile Include="Models\ColumnModel.cs" />
     <Compile Include="Models\DatabaseModel.cs" />
@@ -89,6 +90,12 @@
     </Compile>
     <Compile Include="Views\CreateDatabase.Designer.cs">
       <DependentUpon>CreateDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CreateForeignKey.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CreateForeignKey.Designer.cs">
+      <DependentUpon>CreateForeignKey.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\CreateIndex.cs">
       <SubType>Form</SubType>
@@ -139,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CreateDatabase.resx">
       <DependentUpon>CreateDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CreateForeignKey.resx">
+      <DependentUpon>CreateForeignKey.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CreateIndex.resx">
       <DependentUpon>CreateIndex.cs</DependentUpon>

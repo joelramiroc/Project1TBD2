@@ -33,8 +33,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.indexName = new System.Windows.Forms.TextBox();
             this.ddl = new System.Windows.Forms.RichTextBox();
-            this.tables = new System.Windows.Forms.ComboBox();
             this.columns = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -81,30 +81,30 @@
             this.ddl.TabIndex = 10;
             this.ddl.Text = "";
             // 
-            // tables
-            // 
-            this.tables.FormattingEnabled = true;
-            this.tables.Location = new System.Drawing.Point(60, 92);
-            this.tables.Name = "tables";
-            this.tables.Size = new System.Drawing.Size(121, 21);
-            this.tables.TabIndex = 13;
-            this.tables.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            // 
             // columns
             // 
             this.columns.FormattingEnabled = true;
-            this.columns.Location = new System.Drawing.Point(229, 92);
+            this.columns.Location = new System.Drawing.Point(127, 92);
             this.columns.Name = "columns";
             this.columns.Size = new System.Drawing.Size(121, 21);
             this.columns.TabIndex = 14;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(57, 100);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(42, 13);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "Column";
             // 
             // CreateIndex
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(491, 348);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.columns);
-            this.Controls.Add(this.tables);
             this.Controls.Add(this.ddl);
             this.Controls.Add(this.indexName);
             this.Controls.Add(this.label1);
@@ -124,7 +124,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox indexName;
         private System.Windows.Forms.RichTextBox ddl;
-        private System.Windows.Forms.ComboBox tables;
         private System.Windows.Forms.ComboBox columns;
+        private System.Windows.Forms.Label label2;
     }
 }

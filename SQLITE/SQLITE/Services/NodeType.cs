@@ -5,5 +5,6 @@
     View,
     Column,
     Trigger,
-    Index
+    Index,
+    Check
 }

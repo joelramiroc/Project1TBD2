@@ -15,29 +15,17 @@ namespace SQLITE.Views
     {
         public string Sql { get; set; }
         bool isNew;
-        string indexNameS;
+        string indexNameS,tableName;
         public DatabaseModel DatabaseModel { get; set; }
 
-        public CreateIndex(bool isNew, string indexName, DatabaseModel datab)
+        public CreateIndex(bool isNew, string indexName, DatabaseModel datab,string tableName)
         {
             InitializeComponent();
+            this.tableName = tableName;
             this.DatabaseModel = datab;
             this.isNew = isNew;
             this.indexNameS = indexName;
-            this.LoadCombobox();
-        }
-
-        public async void LoadCombobox()
-        {
-            foreach (var item in this.DatabaseModel.Tables)
-            {
-                this.tables.Items.Add(item.TableName);
-            }
-            //this.tables.Items.AddRange(this.DatabaseModel.Tables.Select(x => new ListViewItem
-            //{
-            //    Text = x.TableName,
-            //    Tag = x
-            //}).ToArray());
+            this.comboBox1_SelectedIndexChanged();
         }
 
         private void tables_SelectedIndexChanged(object sender, EventArgs e)
@@ -52,21 +40,16 @@ namespace SQLITE.Views
                 MessageBox.Show("Write a name to the INDEX");
                 return;
             }
-
-            var tableSelected = this.tables.Text.ToString();
+            
             var columnSelected = this.columns.Text.ToString();
 
-            if (String.IsNullOrEmpty(tableSelected) || String.IsNullOrEmpty(columnSelected))
-            {
-                return;
-            }
 
             var query = "CREATE ";
             if (this.checkBox1.CheckState == CheckState.Checked)
             {
                 query += "UNIQUE ";
             }
-            query += $"INDEX {this.indexName.Text} ON {tableSelected}({columnSelected})";
+            query += $"INDEX {this.indexName.Text} ON {this.tableName}({columnSelected})";
             this.ddl.Text = query;
             this.Sql = query;
             string caption = "Advertence";
@@ -80,11 +63,10 @@ namespace SQLITE.Views
             }
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox1_SelectedIndexChanged()
         {
             this.columns.Items.Clear();
-            var tab = this.tables.SelectedItem;
-            var tables = this.DatabaseModel.Tables.Find(x => x.TableName.Equals(tab));
+            var tables = this.DatabaseModel.Tables.Find(x => x.TableName.Equals(this.tableName));
             if (tables == null)
             {
                 return;

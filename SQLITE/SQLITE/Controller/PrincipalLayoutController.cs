@@ -19,7 +19,8 @@ namespace SQLITE.Controller
         public TreeNode TreeNodeTables;
         public TreeNode TreeNodeViews;
         public TreeNode TreeNodeTriggers;
-        
+        public TreeNode TreeNodeChecks;
+
 
         public PrincipalLayoutController()
         {
@@ -27,6 +28,7 @@ namespace SQLITE.Controller
             this.TreeNodeTables = new TreeNode();
             this.TreeNodeViews = new TreeNode();
             this.TreeNodeTriggers = new TreeNode();
+            this.TreeNodeChecks = new TreeNode();
         }
 
         public async Task<bool> CloseDataBase()
@@ -44,6 +46,8 @@ namespace SQLITE.Controller
             this.datab = new DatabaseModel();
             this.datab.Triggers = await this.db.GetTriggersDataBase();
             this.datab.Tables = await this.db.GetTablesDataBase();
+            this.datab.Checks = await this.db.GetChecksDataBase();
+            
             foreach (var item in this.datab.Tables)
             {
                 try
@@ -87,9 +91,31 @@ namespace SQLITE.Controller
                     Type = NodeType.Menu
                 }
             };
-
             this.TreeNodeViews.Nodes.Add(views);
             treeNodes.Add(views);
+
+            var checks = new TreeNode("CHECKS")
+            {
+                ImageKey = "carpeta cerrada",
+                Tag = new NodeInfo
+                {
+                    Id = 1,
+                    Type = NodeType.Check
+                }
+            };
+
+            this.TreeNodeChecks.Nodes.Add(checks);
+            treeNodes.Add(checks);
+
+            TreeNodeChecks.Nodes.AddRange(this.datab.Checks.Select(x=> new TreeNode
+            {
+                Text = x.CheckName,
+                Tag = new NodeInfo
+                {
+                    Id = 1,
+                    Type = NodeType.Check
+                }
+            }).ToArray());
 
             var triggers = new TreeNode("TRIGGERS")
             {
