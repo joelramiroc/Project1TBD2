@@ -50,9 +50,11 @@ namespace SQLITE.Controller
             
             foreach (var item in this.datab.Tables)
             {
+
                 try
                 {
                     item.Indexs = await this.db.GetIndexTable(item.TableName);
+                    item.Fireigns = await this.db.GetForeignTable(item.TableName);
                 }
                 catch (System.Exception es)
                 {
@@ -172,7 +174,7 @@ namespace SQLITE.Controller
                         Id = 0,
                         Type = NodeType.Column
                     }
-                }).ToArray()); 
+                }).ToArray());
 
                 var indexs = new TreeNode
                 {
@@ -183,6 +185,17 @@ namespace SQLITE.Controller
                         Type = NodeType.Menu
                     }
                 };
+
+                var ForeignsK = new TreeNode
+                {
+                    Text = "ForeignsK",
+                    Tag = new NodeInfo
+                    {
+                        Id = 0,
+                        Type = NodeType.Menu
+                    }
+                };
+
                 indexs.Nodes.AddRange(item.Indexs.Select(x => new TreeNode
                 {
                     Text = x.IndexNamenName,
@@ -192,6 +205,18 @@ namespace SQLITE.Controller
                         Type = NodeType.Index
                     }
                 }).ToArray());
+
+
+                ForeignsK.Nodes.AddRange(item.Fireigns.Select(x => new TreeNode
+                {
+                    Text = x.Name,
+                    Tag = new NodeInfo
+                    {
+                        Id = 0,
+                        Type = NodeType.Foreign
+                    }
+                }).ToArray());
+
                 var tab = new TreeNode
                 {
                     Text = item.TableName,
@@ -204,6 +229,7 @@ namespace SQLITE.Controller
                 this.TreeNodeTables.Nodes.Add(tab);
                 tab.Nodes.Add(column);
                 tab.Nodes.Add(indexs);
+                tab.Nodes.Add(ForeignsK);
             }
 
             //tables.Nodes.AddRange(

@@ -6,5 +6,6 @@
     Column,
     Trigger,
     Index,
-    Check
+    Check,
+    Foreign
 }

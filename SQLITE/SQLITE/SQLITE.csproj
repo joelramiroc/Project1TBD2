@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Controller\PrincipalLayoutController.cs" />
     <Compile Include="Models\CheckModel.cs" />
+    <Compile Include="Models\ForeignKeyModel.cs" />
     <Compile Include="Models\IndexModel.cs" />
     <Compile Include="Models\ColumnModel.cs" />
     <Compile Include="Models\DatabaseModel.cs" />

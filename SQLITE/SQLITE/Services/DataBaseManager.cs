@@ -143,6 +143,8 @@ namespace SQLite.Services
             return hecks;
         }
 
+        
+
         public async Task<List<TriggerModel>> GetTriggersDataBase()
         {
             var triggers = new List<TriggerModel>();
@@ -175,6 +177,24 @@ namespace SQLite.Services
                     Id = 0,
                     IndexNamenName = result["name"].ToString(),
                     Sql = result["sql"].ToString(),
+                });
+            }
+
+            return indexs;
+        }
+
+        public async Task<List<ForeignKeyModel>> GetForeignTable(string tableName)
+        {
+            var indexs = new List<ForeignKeyModel>();
+            string query = $@"PRAGMA foreign_key_list({tableName}) ";
+            SQLiteCommand sQLiteCommand3 = new SQLiteCommand(query, this.SQLiteConnection);
+            var result = sQLiteCommand3.ExecuteReader();
+            while (result.Read())
+            {
+                indexs.Add(new ForeignKeyModel
+                {
+                    Id = 0,
+                    Name = result["name"].ToString(),
                 });
             }
 

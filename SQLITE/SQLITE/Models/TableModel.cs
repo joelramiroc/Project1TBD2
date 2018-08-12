@@ -18,10 +18,16 @@ namespace SQLITE.Models
             {
                 this.Indexs = new List<IndexModel>();
             }
+            if (this.Fireigns== null)
+            {
+                this.Fireigns = new List<ForeignKeyModel>();
+            }
         }
         public string TableName { get; set; }
 
         public List<ColumnModel> Columns { get; set; }
+
+        public List<ForeignKeyModel> Fireigns { get; set; }
 
         public List<IndexModel> Indexs { get; set; }
     }
