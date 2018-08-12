@@ -21,6 +21,8 @@ namespace SQLITE
         RegisterOfTableView RegisterOfTableView;
         CreateIndex CreateIndex;
         AlterTable AlterTable;
+        CreateDatabase createDatabase;
+        AlterTrigger AlterTrigger;
         public PrincipalLayout()
         {
             InitializeComponent();
@@ -110,6 +112,7 @@ namespace SQLITE
                         var nodes = (await this.controller.GethTreeNodes()).ToArray();
                         this.treeViewDataConecction.Nodes.AddRange(nodes);
                         this.isConnect = true;
+                        this.createD.Visible = false;
                         this.pictureBox2.BackgroundImage = Image.FromFile(@"..\..\Resources\cancel.png");
                     }
                     else
@@ -130,7 +133,8 @@ namespace SQLITE
             {
                 await this.controller.CloseDataBase();
                 this.isConnect = false;
-                this.pictureBox2.BackgroundImage = Image.FromFile(@"..\..\Resources\add.png");
+                this.createD.Visible = true;
+                this.pictureBox2.BackgroundImage = Image.FromFile(@"..\..\Resources\open.png");
                 this.treeViewDataConecction.Nodes.Clear();
                 dataGridView1.DataSource = null;
             }
@@ -241,31 +245,8 @@ namespace SQLITE
                 {
                     return;
                 }
-                this.AlterTable = new AlterTable(table,await this.controller.GetSQliteConecction());
-                if (this.AlterTable.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        var query = this.AlterTable.Sql;
-                        var result = await this.controller.ExecuteConsult(query);
-                        if (result == 0)
-                        {
-                            this.treeViewDataConecction.Nodes.Clear();
-                            var nodes = (await this.controller.GethTreeNodes()).ToArray();
-                            this.treeViewDataConecction.Nodes.AddRange(nodes);
-                            MessageBox.Show("The table was edited suscefully");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Not was edited the table");
-                        }
-                    }
-                    catch (Exception exc)
-                    {
-                        MessageBox.Show("Internal error:" + exc.Message);
-                    }
-
-                }
+                this.AlterTable = new AlterTable(table, await this.controller.GetSQliteConecction());
+                this.AlterTable.ShowDialog();
             }
             else if (parent.Text.Equals("VIEWS"))
             {
@@ -309,20 +290,22 @@ namespace SQLITE
 
                 string querys = $"select * from sqlite_master where name = '{node.Text}' and type = 'trigger'";
                 var results = await this.controller.Consulta(querys);
-                var c = $"drop trigger {node.Text} ; \n \n";
+                var c = "";
+                var drop = $"drop trigger {node.Text} ; \n \n";
 
                 while (results.Read())
                 {
                     c += results["sql"].ToString();
 
                 }
-
-                this.CreateTrigger = new CreateTrigger(false, c, this.controller.datab);
-                if (this.CreateTrigger.ShowDialog() == DialogResult.OK)
+                this.manualQuerys.Text = c;
+                this.AlterTrigger = new AlterTrigger(c);
+                if (this.AlterTrigger.ShowDialog() == DialogResult.OK)
                 {
                     try
                     {
-                        var query = this.CreateTrigger.Sql;
+                        var query = this.AlterTrigger.Sql;
+                        await this.controller.ExecuteConsult(drop);
                         var result = await this.controller.ExecuteConsult(query);
                         if (result == 0)
                         {
@@ -333,14 +316,17 @@ namespace SQLITE
                         }
                         else
                         {
-                            MessageBox.Show("Not was edited the trigger");
+                            MessageBox.Show("Not was edited the view");
                         }
                     }
-                    catch (Exception exc)
+                    catch (Exception ews)
                     {
-                        MessageBox.Show("Internal error :" + exc.Message);
+                        MessageBox.Show("Internal error: \n" + ews.Message);
                     }
+
                 }
+
+
             }
             else
             {
@@ -634,6 +620,23 @@ namespace SQLITE
                 {
 
                     MessageBox.Show("Internal error:" + exc.Message);
+                }
+            }
+        }
+
+        private async void createD_Click(object sender, EventArgs e)
+        {
+            this.createDatabase = new CreateDatabase();
+            if (this.createDatabase.ShowDialog() == DialogResult.OK)
+            {
+                var result = await this.controller.CreaateDatabase(this.createDatabase.DatabasePath,this.createDatabase.DatabaseName);
+                if (result)
+                {
+                    MessageBox.Show("Database created");
+                }
+                else
+                {
+                    MessageBox.Show("Cant create the database");
                 }
             }
         }

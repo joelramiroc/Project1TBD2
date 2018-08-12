@@ -78,6 +78,18 @@
     <Compile Include="Views\AlterTable.Designer.cs">
       <DependentUpon>AlterTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\AlterTrigger.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\AlterTrigger.Designer.cs">
+      <DependentUpon>AlterTrigger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CreateDatabase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CreateDatabase.Designer.cs">
+      <DependentUpon>CreateDatabase.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CreateIndex.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +133,12 @@
     </Compile>
     <EmbeddedResource Include="Views\AlterTable.resx">
       <DependentUpon>AlterTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\AlterTrigger.resx">
+      <DependentUpon>AlterTrigger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CreateDatabase.resx">
+      <DependentUpon>CreateDatabase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CreateIndex.resx">
       <DependentUpon>CreateIndex.cs</DependentUpon>
@@ -172,6 +190,7 @@
     <Content Include="Resources\cancel.png" />
     <Content Include="Resources\carpeta abierta.png" />
     <Content Include="Resources\carpeta cerrada.png" />
+    <Content Include="Resources\open.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" />

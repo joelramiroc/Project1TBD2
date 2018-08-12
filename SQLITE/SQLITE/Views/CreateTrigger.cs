@@ -18,13 +18,6 @@ namespace SQLITE.Views
         {
             InitializeComponent();
             this.databaseModel = databaseModel;
-            this.query = @" CREATE TRIGGER[IF NOT EXISTS] trigger_name \n" +
-                "[BEFORE | AFTER | INSTEAD OF][INSERT | UPDATE | DELETE] \n" +
-                "ON table_name \n" +
-                "[WHEN condition] \n" +
-                "BEGIN \n" +
-                "statements; \n" +
-                "END; \n";
             this.isNew = isNew;
             this.lastSql = @"BEGIN
                             statements
@@ -37,7 +30,6 @@ namespace SQLITE.Views
         {
             if (this.isNew)
             {
-                this.ddl.Text = this.lastSql;
                 this.button1.Text = "Edit";
                 this.comboTable.Items.AddRange(this.databaseModel.Tables.Select(x => x.TableName).ToArray());
                 this.comboAction.Items.AddRange((string[])Enum.GetNames(typeof(TriggerType)));

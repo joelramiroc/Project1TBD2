@@ -7,6 +7,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System;
 
 namespace SQLITE.Controller
 {
@@ -223,5 +224,9 @@ namespace SQLITE.Controller
             return this.db.SQLiteConnection;
         }
 
+        internal async Task<bool> CreaateDatabase(string databasePath,string name)
+        {
+            return await this.db.CreateDataBase(databasePath, name);
+        }
     }
 }

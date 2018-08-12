@@ -52,9 +52,9 @@
             this.IsNull,
             this.AutoIncrement,
             this.DefaultValue});
-            this.dataGridView1.Location = new System.Drawing.Point(68, 122);
+            this.dataGridView1.Location = new System.Drawing.Point(48, 123);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(646, 150);
+            this.dataGridView1.Size = new System.Drawing.Size(544, 150);
             this.dataGridView1.TabIndex = 4;
             // 
             // ColumName
@@ -74,13 +74,14 @@
             // 
             // IsNull
             // 
-            this.IsNull.HeaderText = "IsNull";
+            this.IsNull.HeaderText = "Not Null";
             this.IsNull.Name = "IsNull";
             // 
             // AutoIncrement
             // 
             this.AutoIncrement.HeaderText = "AutoIncrement";
             this.AutoIncrement.Name = "AutoIncrement";
+            this.AutoIncrement.Visible = false;
             // 
             // DefaultValue
             // 
@@ -145,15 +146,15 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.TextBox tableName;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.RichTextBox ddl;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumName;
         private System.Windows.Forms.DataGridViewComboBoxColumn ColumType;
         private System.Windows.Forms.DataGridViewCheckBoxColumn PrimaryKey;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsNull;
-        private System.Windows.Forms.TextBox tableName;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridViewCheckBoxColumn AutoIncrement;
         private System.Windows.Forms.DataGridViewTextBoxColumn DefaultValue;
-        private System.Windows.Forms.RichTextBox ddl;
     }
 }

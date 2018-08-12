@@ -120,7 +120,7 @@ namespace SQLITE.Views
                     }
                     else
                     {
-                        if (data.IsNull != null && !data.IsNull.Value)
+                        if (data.IsNull != null && data.IsNull.Value)
                         {
                             column += $" NOT NULL";
                         }

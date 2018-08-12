@@ -34,9 +34,7 @@ namespace SQLITE
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PrincipalLayout));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.treeViewDataConecction = new System.Windows.Forms.TreeView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.manualQuerys = new System.Windows.Forms.RichTextBox();
@@ -49,13 +47,17 @@ namespace SQLITE
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.menuMenus = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.createD = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuElements.SuspendLayout();
             this.menuMenus.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.createD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -69,19 +71,9 @@ namespace SQLITE
             this.groupBox1.Text = "TaskBar";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImage = global::SQLITE.Properties.Resources.play;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(302, 41);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(22, 23);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.createD);
             this.groupBox2.Controls.Add(this.pictureBox2);
             this.groupBox2.Controls.Add(this.treeViewDataConecction);
             this.groupBox2.Location = new System.Drawing.Point(0, 70);
@@ -90,17 +82,6 @@ namespace SQLITE
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Information";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackgroundImage = global::SQLITE.Properties.Resources.add;
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox2.Location = new System.Drawing.Point(12, 19);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(22, 23);
-            this.pictureBox2.TabIndex = 2;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_ClickAsync);
             // 
             // treeViewDataConecction
             // 
@@ -186,15 +167,48 @@ namespace SQLITE
             this.menuMenus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem2});
             this.menuMenus.Name = "contextMenuStrip1";
-            this.menuMenus.Size = new System.Drawing.Size(153, 48);
+            this.menuMenus.Size = new System.Drawing.Size(97, 26);
             this.menuMenus.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening_1);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(96, 22);
             this.toolStripMenuItem2.Text = "Add";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            // 
+            // createD
+            // 
+            this.createD.BackgroundImage = global::SQLITE.Properties.Resources.add;
+            this.createD.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.createD.Location = new System.Drawing.Point(100, 19);
+            this.createD.Name = "createD";
+            this.createD.Size = new System.Drawing.Size(22, 23);
+            this.createD.TabIndex = 3;
+            this.createD.TabStop = false;
+            this.createD.Click += new System.EventHandler(this.createD_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImage = global::SQLITE.Properties.Resources.open;
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox2.Location = new System.Drawing.Point(12, 19);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(22, 23);
+            this.pictureBox2.TabIndex = 2;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_ClickAsync);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::SQLITE.Properties.Resources.play;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.Location = new System.Drawing.Point(302, 41);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(22, 23);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // PrincipalLayout
             // 
@@ -208,12 +222,13 @@ namespace SQLITE
             this.Name = "PrincipalLayout";
             this.Text = "Form1";
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.menuElements.ResumeLayout(false);
             this.menuMenus.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.createD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -236,6 +251,7 @@ namespace SQLITE
         private System.Windows.Forms.ContextMenuStrip menuMenus;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem viewInfoToolStripMenuItem;
+        private System.Windows.Forms.PictureBox createD;
     }
 }
 
