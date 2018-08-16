@@ -71,3 +71,6 @@ C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\De
 C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.CreateDatabase.resources
 C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.AlterTrigger.resources
 C:\Users\Joel Caballero\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.CreateForeignKey.resources
+C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.AlterTrigger.resources
+C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.CreateDatabase.resources
+C:\Users\joel.caballero.LEITZGROUP.000\Desktop\Project1TBD2\SQLITE\SQLITE\obj\Debug\SQLITE.Views.CreateForeignKey.resources

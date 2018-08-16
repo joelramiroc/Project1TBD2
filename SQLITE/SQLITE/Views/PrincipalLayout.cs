@@ -151,12 +151,13 @@ namespace SQLITE
             }
 
             return await this.controller.OpenDataBase(path);
-
         }
 
         private async void pictureBox1_Click(object sender, EventArgs e)
-        {
-            if (this.manualQuerys.TextLength == 0)
+{
+    if (this.isConnect)
+    {
+        if (this.manualQuerys.TextLength == 0)
             {
                 MessageBox.Show("The query is empty");
                 return;
@@ -190,6 +191,11 @@ namespace SQLITE
                     MessageBox.Show("Error in command:" + ss.Message);
                 }
 
+                }
+            }
+            else
+            {
+                MessageBox.Show("You need connect to a database.");
             }
         }
 

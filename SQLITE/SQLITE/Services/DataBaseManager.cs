@@ -194,7 +194,7 @@ namespace SQLite.Services
                 indexs.Add(new ForeignKeyModel
                 {
                     Id = 0,
-                    Name = result["name"].ToString(),
+                    Name = result["to"].ToString(),
                 });
             }
 
