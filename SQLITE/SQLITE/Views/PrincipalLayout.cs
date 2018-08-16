@@ -114,6 +114,7 @@ namespace SQLITE
                         this.treeViewDataConecction.Nodes.AddRange(nodes);
                         this.isConnect = true;
                         this.createD.Visible = false;
+                        this.pictureBox3.Visible = true;
                         this.pictureBox2.BackgroundImage = Image.FromFile(@"..\..\Resources\cancel.png");
                     }
                     else
@@ -134,6 +135,7 @@ namespace SQLITE
             {
                 await this.controller.CloseDataBase();
                 this.isConnect = false;
+                this.pictureBox3.Visible = false;
                 this.createD.Visible = true;
                 this.pictureBox2.BackgroundImage = Image.FromFile(@"..\..\Resources\open.png");
                 this.treeViewDataConecction.Nodes.Clear();
@@ -675,6 +677,29 @@ namespace SQLITE
             {
                 this.CreateForeignKey = new CreateForeignKey(this.controller.datab,node.Text, await this.controller.GetSQliteConecction());
                 this.CreateForeignKey.ShowDialog();
+            }
+        }
+
+        private async void pictureBox3_Click(object sender, EventArgs e)
+        {
+            if(this.isConnect)
+            {
+
+                try
+                {
+                    await this.controller.CloseDataBase();
+                    this.isConnect = false;
+                    this.createD.Visible = true;
+                    this.pictureBox2.BackgroundImage = Image.FromFile(@"..\..\Resources\open.png");
+                    this.treeViewDataConecction.Nodes.Clear();
+                    dataGridView1.DataSource = null;
+                    var result = await this.controller.DeleteDataBase();
+                    MessageBox.Show("Database dropped");
+                }
+                catch(Exception es)
+                {
+                    MessageBox.Show("Any error:" + es.Message);
+                }
             }
         }
     }

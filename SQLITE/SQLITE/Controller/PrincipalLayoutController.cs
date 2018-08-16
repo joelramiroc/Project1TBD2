@@ -280,5 +280,10 @@ namespace SQLITE.Controller
         {
             return await this.db.CreateDataBase(databasePath, name);
         }
+
+        public async Task<bool> DeleteDataBase()
+        {
+            return await this.db.DeleteDataBase();
+        }
     }
 }

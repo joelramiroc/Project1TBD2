@@ -23,8 +23,8 @@ namespace SQLite.Services
         public async Task<bool> CreateDataBase(string path, string databaseName)
         {
             this.DatabaseName = databaseName;
-            this.Databasepath = path;
             var complete = $@"{path}\{databaseName}.db";
+            this.Databasepath = complete;
             this.SQLiteConnection = new SQLiteConnection($@"Data Source = {complete}");
 
             if (!File.Exists(complete))
@@ -33,6 +33,13 @@ namespace SQLite.Services
                 return true;
             }
 
+            return false;
+        }
+        public async Task<bool> DeleteDataBase()
+        {
+            await this.CloseDatabase();
+            this.SQLiteConnection = new SQLiteConnection();
+            File.Delete(this.Databasepath);
             return false;
         }
 

@@ -201,6 +201,7 @@
     <Content Include="Resources\cancel.png" />
     <Content Include="Resources\carpeta abierta.png" />
     <Content Include="Resources\carpeta cerrada.png" />
+    <Content Include="Resources\menos.png" />
     <Content Include="Resources\open.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
